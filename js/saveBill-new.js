@@ -80,7 +80,7 @@ application.bill.creation = {
                 $(".ornamentDetails tbody").find('.newItem').removeClass('newItem');
                 $(".ornamentDetails tbody").append(newRow);
                 $(".ornamentDetails tbody").find('.newItem').focus();
-                gs.autocompleter.billOrnList();
+                gs.autocompleter.getOrnList();
             }
 
 
@@ -117,8 +117,14 @@ application.bill.creation = {
                 $('.largeAmtDisplay input').val('Rs: '+ formatted +'.00');
             }
         });
+
+        $('input:text').focus(function(){
+            $(this).select(); 
+        });
+
         self.bindQRFunctions();
         self.bindImageRelations();
+        self.bindCustIdCreations();
         self.bindTraverseEvents();
         self.initHistoryPanel();
         
@@ -168,8 +174,16 @@ application.bill.creation = {
     },
 
     setDefaults: function(){
-        var aQuery = 'SELECT * FROM test.billseries';
-        gs.querybuilder.executeQuery(aQuery, application.bill.creation.updateDefaults);
+        var obj = {};
+        obj.aQuery= 'SELECT * FROM '+gs.database.schema+'.billseries';
+        var callBackObj = application.core.getCallbackObject();
+        var request = application.core.getRequestData('executequery.php', obj , 'POST');
+        callBackObj.bind('api_response', function(event, response){
+          response = JSON.parse(response);
+          application.bill.creation.updateDefaults(response);
+          gs.autocompleter.setAutoCompleter('billCreation');
+        });
+        application.core.call(request, callBackObj);
     },
 
     updateDefaults: function(data){
@@ -315,6 +329,19 @@ application.bill.creation = {
         });
     },
 
+    bindCustIdCreations: function(){
+        var self = application.bill.creation;
+        $('#customerName').blur(function(e){
+            self.checkCustId($(this).val());
+        });
+        $('#fatherGaurdianName').blur(function(e){
+            self.checkCustId($('#customerName').val(), $(this).val());
+        });
+        $('#address').blur(function(e){
+            self.checkCustId($('#customerName').val(),$('#fatherGaurdianName').val(), $(this).val());
+        });
+     },
+
     initHistoryPanel: function(){
         var aSelf = application.bill.creation;
         $('#fatherGaurdianName').blur(function(e){
@@ -324,6 +351,15 @@ application.bill.creation = {
             var customer_name = $('#customerName').val();
             var father_name = $(this).val();
             aSelf.getCustomerPendingBills(customer_name, father_name);
+        });
+
+         $('#address').blur(function(e){
+            if($(this).val() == '')
+                return;
+            var customer_name = $('#customerName').val();
+            var father_name = $('#fatherGaurdianName').val();
+            var address = $(this).val();
+            aSelf.getCustomerPendingBills(customer_name, father_name, address);
         });
     },
 
@@ -339,6 +375,7 @@ application.bill.creation = {
         var callBackObj = application.core.getCallbackObject();
         var request = application.core.getRequestData('interest.php', '' , 'POST');
         callBackObj.bind('api_response', function(event, response){
+            debugger;
            entryList = self.getEntries(response);
            saveIntoDB();
         });
@@ -371,7 +408,7 @@ application.bill.creation = {
 
     updateLastBillNumber: function(){
         var currentBillNo = $('#billNo').val();
-        var aQuery1 = "UPDATE test.billseries SET last_created_bill='"+currentBillNo+"' WHERE s_no='1'";
+        var aQuery1 = "UPDATE "+gs.database.schema+".billseries SET last_created_bill='"+currentBillNo+"' WHERE s_no='1'";
         //gs.querybuilder.executeQuery(aQuery, '');
         var qObj1 = {
             aQuery: aQuery1
@@ -389,7 +426,7 @@ application.bill.creation = {
     },
 
     updateLastSerialNumber: function(){
-        var aQuery2 = "UPDATE test.billseries SET pledgebook_sno ='"+application.bill.creation.current_s_no +"' WHERE s_no = '1' ";
+        var aQuery2 = "UPDATE "+gs.database.schema+".billseries SET pledgebook_sno ='"+application.bill.creation.current_s_no +"' WHERE s_no = '1' ";
         //gs.querybuilder.executeQuery(aQuery, '');
         var qObj2 = {
             aQuery: aQuery2
@@ -408,7 +445,7 @@ application.bill.creation = {
     },
 
     bindNecessaryEvents: function(){
-        gs.autocompleter.billOrnList();
+        gs.autocompleter.getOrnList();
     },
 
     getEntries : function(intDatas) {
@@ -421,6 +458,7 @@ application.bill.creation = {
         obj.aBillNo = billSeries != '' ? (billSeries + '.' + billNo) : billNo;  
         //obj.aBillNo = ($('#billSeries').val() + '.' + $('#billNo').val()) || '';
         obj.aAmt = $('#ammout').val() || '';
+        obj.custid = $('#custId').val();
         obj.aCustName= $('#customerName').val() || '';
         obj.aFGName = $('#fatherGaurdianName').val() || '';
         obj.aAddress = $('#address').val() || '';
@@ -527,6 +565,8 @@ application.bill.creation = {
     clearFields: function(){
         application.bill.creation.setDefaults();
         $('#ammout').val('');
+        $('#custId').val('');
+        $('#custId').hasClass('new')? $('#custId').removeClass('new'): '';
         $('#customerName').val('');
         $('#fatherGaurdianName').val('');
         $('#address').val('');
@@ -546,6 +586,7 @@ application.bill.creation = {
                         '<td><input type="text" class="appendRow" data-index="16"></td>'+
                     '</tr>';
         $(".ornamentDetails tbody").html(aRow);
+        $('.pendingBillListContainer tbody').html('');
         this.current_int_rate = '';
         this.setImage([]);
     },
@@ -713,11 +754,13 @@ application.bill.creation = {
         gs.popover.bindPopover('.viewBillDetails', self.getBillDetails);
     },
 
-    getCustomerPendingBills: function(customer_name, father_name){
+    getCustomerPendingBills: function(customer_name, father_name, address){
         var self = application.bill.creation;
-        var obj = {
-            aQuery: "SELECT * FROM test.pledgebook where cname = '"+customer_name+"' and fgname = '"+father_name+"'"
-        }
+        var obj = {};
+        if(typeof address == 'undefined')
+            obj.aQuery= "SELECT * FROM "+gs.database.schema+".pledgebook where cname = '"+customer_name+"' and fgname = '"+father_name+"'";
+        else if(typeof address !== 'undefined')
+            obj.aQuery= "SELECT * FROM "+gs.database.schema+".pledgebook where cname = '"+customer_name+"' and fgname = '"+father_name+"' and address='"+address+"'";
         var callBackObj = application.core.getCallbackObject();
         var request = application.core.getRequestData('executeQuery.php', obj, 'POST');
         callBackObj.bind('api_response', function(event, response, request){
@@ -783,7 +826,7 @@ application.bill.creation = {
             $('.pendingBillListContainer table tbody').append(htmlCont);
         });
         bindTriggerEvent('pendingBillListPopover');
-        removeSpecificColumn();
+       // removeSpecificColumn();
 
     },
 
@@ -797,6 +840,129 @@ application.bill.creation = {
             default: 
                 break;
         }
+    },
+    /* START: custId */
+    checkCustId: function(cname, fgname, addr){
+        var self = application.bill.creation;
+        if(typeof cname == 'undefined')
+            cname = '';
+        if(typeof fgname == 'undefined')
+            fgname = '';
+        if(typeof addr == 'undefined')
+            addr = '';
+        var obj = {};
+        var currFocus = 'cname'
+       
+        if(cname !== ''){
+            currFocus = 'cname';
+            obj.aQuery = "SELECT distinct custid from "+gs.database.schema+".pledgebook where cname= '"+cname+"'";
+        }
+        if(fgname !== ''){
+            currFocus = 'fgname';
+            obj.aQuery = obj.aQuery + " and fgname= '"+fgname+"'";
+        }
+        if(addr !== ''){
+            currFocus = 'addr';
+            obj.aQuery = obj.aQuery + " and address= '"+addr+"'";
+        }
+
+        obj.aQuery = obj.aQuery + " and custid IS NOT NULL";
+
+        var callBackObj = application.core.getCallbackObject();
+        var request = application.core.getRequestData('executeQuery.php', obj, 'POST');
+        callBackObj.bind('api_response', function(event, response, request){
+            data = JSON.parse(response);
+            if(!_.isEmpty(data) && !_.isEmpty(data[0].custid)){
+                var id= data[0].custid;
+                self.autoFillDetails(id);
+            }else{
+                var options={};
+                options.currFocus = currFocus;
+                self.generateNewCustId(options);
+            }
+            $('#custId').val(id);
+        });
+        application.core.call(request, callBackObj);
+    },
+    generateNewCustId: function(options){
+        var self = application.bill.creation;
+        self.clearAutoFill(options);
+        var cName = $("#customerName").val();
+        var fName = $('#fatherGaurdianName').val();
+        if(cName !=='')
+            cName = cName.substring(0,1);
+        if(fName != '')
+            fName = fName.substring(0,1);
+        var idPrefix = cName + fName;
+        idPrefix = idPrefix.toUpperCase();
+        var idSuffix = 1;
+        var id = idPrefix + idSuffix;
+        var obj = {
+            aQuery : "SELECT distinct custid from "+gs.database.schema+".pledgebook where custid like '"+idPrefix+"%'"
+        }
+        var callBackObj = application.core.getCallbackObject();
+        var request = application.core.getRequestData('executeQuery.php', obj, 'POST');
+        callBackObj.bind('api_response', function(event, response, request){
+            if(response == null)
+                return;
+            response = JSON.parse(response);
+            data = self.getUniqueList(response, 'custid');
+            if(!_.isEmpty(data) && !_.isEmpty(data[0].custid)){
+                _.each(data, function(value, index){
+                    var existingId = value.custid;
+                    existingId = existingId.toUpperCase();
+                    if(existingId.indexOf(id) !== -1){
+                        idSuffix = idSuffix+1;
+                        id= idPrefix + idSuffix;
+                    }
+                });
+            }
+            $('#custId').val(id);
+            $('#custId').addClass('new');
+            
+        });
+        application.core.call(request, callBackObj);
+    },
+    autoFillDetails: function(id){  
+         var obj = {
+            aQuery : "SELECT distinct * from "+gs.database.schema+".pledgebook where custid= '"+id+"'"
+        }
+        var callBackObj = application.core.getCallbackObject();
+        var request = application.core.getRequestData('executeQuery.php', obj, 'POST');
+        callBackObj.bind('api_response', function(event, response, request){
+            if(response == null)
+                return;
+            response = JSON.parse(response);
+            data = response[0];
+            $('#fatherGaurdianName').val(data.fgname);
+            $('#address').val(data.address);
+            $('#address2').val(data.address2 || application.core.defaults.address2);
+            $('#place').val(data.place || application.core.defaults.place);
+            $('#pincode').val(data.pincode || application.core.defaults.pincode);
+            $('#mobNo').val(data.mobile);
+            $('#custId').hasClass('new')? $('#custId').removeClass('new'): '';
+        });
+        application.core.call(request, callBackObj);
+    },
+    clearAutoFill: function(options){
+        if(options.currFocus == 'cname'){
+            $('#fatherGaurdianName').val('');
+        }
+        if(options.currFocus == 'cname' || options.currFocus == 'fgname'){
+            $('#address').val('');
+        }
+        $('#address2').val(application.core.defaults.address2);
+        $('#place').val(application.core.defaults.place);
+        $('#pincode').val(application.core.defaults.pincode);
+        $('#mobNo').val('');
+    },
+    /* END: custId */
+
+    getUniqueList: function(data, param){
+        var data = _.uniq(data, function(aData) { 
+                            return aData[param];
+                        });
+        return data;
     }
 
 }
