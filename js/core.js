@@ -38,7 +38,7 @@ application.core ={
 		$('#createNewBill').on('click', function(e){
 			aSelf.updatePageName('billCreationPage');
 			var property = {};
-			var template = _.template($('#newBillCreationTemplate').html(), property);
+			var template = _.template(template_htmlstr_billCreation, property);
 			$('.mainContent').html(template);
 			$('.autocomplete-suggestions').remove();
 			application.bill.creation.init();
@@ -52,7 +52,7 @@ application.core ={
 		$('#closeABill').on('click', function(e){
 			aSelf.updatePageName('billClosingPage');
 			var property = {};
-			var template = _.template($('#billClosingTemplate').html(), property);
+			var template = _.template(template_htmlstr_billClosing, property);
 			$('.mainContent').html(template);
 			$('.autocomplete-suggestions').remove();
 			gs.billClosing.init();
@@ -62,7 +62,7 @@ application.core ={
 		$('#tallyGenerator').on('click', function(e){
 			aSelf.updatePageName('tallyPage');
 			var property = {};
-			var template = _.template($('#tallyGeneratorTemplate').html(), property);
+			var template = _.template(template_htmlstr_tally, property);
 			$('.mainContent').html(template);
 			$('.autocomplete-suggestions').remove();
 			application.bill.customDate.bindEvents('tallyGenerator');
@@ -78,13 +78,22 @@ application.core ={
 			gs.generateToken.init();
 		});
 
+		$('#manageOrn').on('click', function(e){
+			aSelf.updatePageName('ornamentsPage');
+			var property = {};
+			var template = _.template(template_htmlstr_ornaments, property);
+			$('.mainContent').html(template);
+			$('.autocomplete-suggestions').remove();
+			gs.ornaments.init();
+		});
+
 		this.getNecessaryDatas();
 	},
 
 	getNecessaryDatas: function(){
 		var aSelf = this;
 		var callBackObj = aSelf.getCallbackObject();
-        var request = application.core.getRequestData('interest.php', '' , 'POST');
+        var request = application.core.getRequestData('../php/interest.php', '' , 'POST');
         callBackObj.bind('api_response', function(event, response){
            aSelf.setInterestDetailsInStorage(response);
         });
@@ -160,7 +169,7 @@ application.core ={
 
 	//this will remove the class which is set for PageName Identification
 	removePageName: function(){
-		var pageNames = ['book', 'billCreationPage', 'billClosingPage', 'tallyPage'];
+		var pageNames = ['book', 'billCreationPage', 'billClosingPage', 'tallyPage', 'ornamentsPage'];
 		var classes = $('.mainContent').attr('class');
 		classList = classes.split(' ');
 		_.each(pageNames, function(value, index){

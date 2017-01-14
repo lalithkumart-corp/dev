@@ -1,16 +1,19 @@
 <?php
+include 'app.php';
 $servername = "localhost";
 $username = "root";
 $password = "root";
-$mydb = "test";
-$link = mysqli_connect("localhost:3306", "root", "root", $mydb);
+$link = mysqli_connect("localhost:3306", "root", "root", $myDb);
 
 if (!$link) {
     echo "Error: Unable to connect to MySQL." . PHP_EOL;
     exit;
 }
 
-$sql = "SELECT * FROM ".$mydb.".pledgebook";
+$fname = $_POST['fname'];
+//$sql = "SELECT profilepicpath FROM test.mytable1 WHERE myNames = '" .$fname. "'";
+$sql = "SELECT profilepicpath FROM ".$myDb.".pledgebook WHERE cname = '" .$fname. "'";
+
 $result = $link->query($sql);
 
 $stack = array();
@@ -24,5 +27,4 @@ if ($result->num_rows > 0) {
 
 echo json_encode($stack);
 mysqli_close($link);
-
 ?>

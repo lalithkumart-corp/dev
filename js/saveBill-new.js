@@ -177,7 +177,7 @@ application.bill.creation = {
         var obj = {};
         obj.aQuery= 'SELECT * FROM '+gs.database.schema+'.billseries';
         var callBackObj = application.core.getCallbackObject();
-        var request = application.core.getRequestData('executequery.php', obj , 'POST');
+        var request = application.core.getRequestData('../php/executequery.php', obj , 'POST');
         callBackObj.bind('api_response', function(event, response){
           response = JSON.parse(response);
           application.bill.creation.updateDefaults(response);
@@ -221,7 +221,7 @@ application.bill.creation = {
                     fname : $(this).val(),
                 }
                 $.ajax({
-                    url: 'getimage.php',
+                    url: '../php/getimage.php',
                     type: 'POST',
                     data: obj,
                     success: function(data, textStatus, jqXHR)
@@ -321,7 +321,7 @@ application.bill.creation = {
             $('#webModalContainer').modal('show');
              $('#webModalContainer').on('shown.bs.modal', function () {
                   var obj = {};
-                  $('#webModalContainer .modal-body').html(_.template($('#webCammTemplate').html(), obj));
+                  $('#webModalContainer .modal-body').html(_.template(template_htmlstr_webcam, obj));
                   gs.webcamModel.init();
             });
             $('#webModalContainer').on('hidden.bs.modal', function () {
@@ -366,14 +366,19 @@ application.bill.creation = {
     saveEntry : function(){
         if($('#ammout').val().trim() == ''){
             $('#ammout').focus();
-            alert('Amount Should not be Empty !');
+            gs.popup.init(
+                {
+                 title: 'Alert',
+                 desc: 'Please enter the Amount. It cannot be Empty !' ,
+                 dismissBtnText: 'Ok'
+                });
             return;
         }
 
         var self = application.bill.creation;
         var entryList = {};
         var callBackObj = application.core.getCallbackObject();
-        var request = application.core.getRequestData('interest.php', '' , 'POST');
+        var request = application.core.getRequestData('../php/interest.php', '' , 'POST');
         callBackObj.bind('api_response', function(event, response){
             debugger;
            entryList = self.getEntries(response);
@@ -386,7 +391,7 @@ application.bill.creation = {
         
         function saveIntoDB(){
             var callBackObj = application.core.getCallbackObject();
-            var request = application.core.getRequestData('createbill.php', entryList, 'POST');
+            var request = application.core.getRequestData('../php/createbill.php', entryList, 'POST');
             callBackObj.bind('api_response', function(event, response){
                 var responseData = JSON.parse(response)[0];
                 if(responseData.status == 'success'){                
@@ -414,7 +419,7 @@ application.bill.creation = {
             aQuery: aQuery1
         }
         var callBackObj = application.core.getCallbackObject();
-        var request = application.core.getRequestData('executeQuery.php', qObj1, 'POST');
+        var request = application.core.getRequestData('../php/executeQuery.php', qObj1, 'POST');
         callBackObj.bind('api_response', function(event, response, request){
             response = JSON.parse(response);
             if(response[0].status == true)
@@ -432,7 +437,7 @@ application.bill.creation = {
             aQuery: aQuery2
         }
         var callBackObj = application.core.getCallbackObject();
-        var request = application.core.getRequestData('executeQuery.php', qObj2, 'POST');
+        var request = application.core.getRequestData('../php/executeQuery.php', qObj2, 'POST');
         callBackObj.bind('api_response', function(event, response, request){
             response = JSON.parse(response);
             if(response[0].status == true)
@@ -762,7 +767,7 @@ application.bill.creation = {
         else if(typeof address !== 'undefined')
             obj.aQuery= "SELECT * FROM "+gs.database.schema+".pledgebook where cname = '"+customer_name+"' and fgname = '"+father_name+"' and address='"+address+"'";
         var callBackObj = application.core.getCallbackObject();
-        var request = application.core.getRequestData('executeQuery.php', obj, 'POST');
+        var request = application.core.getRequestData('../php/executeQuery.php', obj, 'POST');
         callBackObj.bind('api_response', function(event, response, request){
             response = JSON.parse(response);
             self.fillPendingBillTable(response);            
@@ -869,7 +874,7 @@ application.bill.creation = {
         obj.aQuery = obj.aQuery + " and custid IS NOT NULL";
 
         var callBackObj = application.core.getCallbackObject();
-        var request = application.core.getRequestData('executeQuery.php', obj, 'POST');
+        var request = application.core.getRequestData('../php/executeQuery.php', obj, 'POST');
         callBackObj.bind('api_response', function(event, response, request){
             data = JSON.parse(response);
             if(!_.isEmpty(data) && !_.isEmpty(data[0].custid)){
@@ -901,7 +906,7 @@ application.bill.creation = {
             aQuery : "SELECT distinct custid from "+gs.database.schema+".pledgebook where custid like '"+idPrefix+"%'"
         }
         var callBackObj = application.core.getCallbackObject();
-        var request = application.core.getRequestData('executeQuery.php', obj, 'POST');
+        var request = application.core.getRequestData('../php/executeQuery.php', obj, 'POST');
         callBackObj.bind('api_response', function(event, response, request){
             if(response == null)
                 return;
@@ -928,7 +933,7 @@ application.bill.creation = {
             aQuery : "SELECT distinct * from "+gs.database.schema+".pledgebook where custid= '"+id+"'"
         }
         var callBackObj = application.core.getCallbackObject();
-        var request = application.core.getRequestData('executeQuery.php', obj, 'POST');
+        var request = application.core.getRequestData('../php/executeQuery.php', obj, 'POST');
         callBackObj.bind('api_response', function(event, response, request){
             if(response == null)
                 return;

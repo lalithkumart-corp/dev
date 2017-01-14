@@ -1,8 +1,8 @@
 <?php
+include 'app.php';
 $servername = "127.0.0.1";
 $username = "root";
 $password = "root";
-$myDb = "test";
 
 $link = mysqli_connect("localhost:3306",'root','root', $myDb);
 
