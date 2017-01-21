@@ -12,4 +12,6 @@ var template_htmlstr_msgBox = <?php echo jsonStringify('../templates/htmlstr_mes
 
 var template_htmlstr_webcam = <?php echo jsonStringify('../templates/htmlstr_webcam.html'); ?> ; 
 
-var template_htmlstr_tally = <?php echo jsonStringify('../templates/htmlstr_tally.html'); ?> ; 
+var template_htmlstr_tally = <?php echo jsonStringify('../templates/htmlstr_tally.html'); ?> ;
+
+var template_htmlstr_pendingAmt = <?php echo jsonStringify('../templates/htmlstr_pendingAmt.html'); ?> ; 

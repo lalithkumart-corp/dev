@@ -87,6 +87,13 @@ application.core ={
 			gs.ornaments.init();
 		});
 
+		$('#tool_receiveAmt').on('click', function(e){
+			aSelf.updatePageName('receivePendingAmount');
+			var property = {};
+			var template = _.template(template_htmlstr_pendingAmt, property);
+			$('.mainContent').html(template);
+		});
+
 		this.getNecessaryDatas();
 	},
 
@@ -169,7 +176,7 @@ application.core ={
 
 	//this will remove the class which is set for PageName Identification
 	removePageName: function(){
-		var pageNames = ['book', 'billCreationPage', 'billClosingPage', 'tallyPage', 'ornamentsPage'];
+		var pageNames = ['book', 'billCreationPage', 'billClosingPage', 'tallyPage', 'ornamentsPage', 'receivePendingAmount'];
 		var classes = $('.mainContent').attr('class');
 		classList = classes.split(' ');
 		_.each(pageNames, function(value, index){

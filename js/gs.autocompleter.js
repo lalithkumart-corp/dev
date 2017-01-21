@@ -359,6 +359,36 @@ gs.autocompleter = {
             secondaryClass: 'closingBillAutoSuggestions'
         });
         $('#billToBeClosed').focus();
-	}
+	},
 	/*END:: filler Methods*/
+
+	/* Ornaments page */
+	fillOrnamentsLst: function(ornList, ornType){
+		var filteredList = [];
+		if(typeof ornType !== 'undefined' && ornType !== ''){
+			$.each(ornList, function(index, value){
+				var type = value.charAt(0);
+				if(type == ornType){
+					ornName = value.substring(2);
+					if(filteredList.indexOf(ornName) == -1)
+						filteredList.push(ornName);
+				}
+			});
+		}else{
+			filteredList = ornList;
+		}
+		
+		filteredList = $.map(filteredList, function (listItem) { return { value: listItem, data: { category: 'Ornaments' }}; });
+		$('.ornInputField').devbridgeAutocomplete({
+        	lookup: filteredList,
+            minChars: 0,
+            onSelect: function (suggestion) {
+              
+            },
+            showNoSuggestionNotice: true,
+            groupBy: 'category'
+        });
+        $('.ornInputField').focus();
+	}
+	/* Ornaments page */
 }

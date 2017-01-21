@@ -28,6 +28,7 @@ gs.ornaments = {
         var request = application.core.getRequestData('../php/executequery.php', obj , 'POST');
         callBackObj.bind('api_response', function(event, response){
 			data = JSON.parse(response);
+			aSelf.storage = [];
 			$('#ornManagementTable tbody').html('');
 			var sno = 1;
 			_.each(data, function(value, index){
@@ -36,6 +37,9 @@ gs.ornaments = {
 				$('#ornManagementTable tbody').append(aRow);
 				sno= sno + 1;
 			});
+			var temp = $('.orn_type').val()
+			var orn_type = $('.orn_type option[value='+ temp +']').text();
+			gs.autocompleter.fillOrnamentsLst(aSelf.storage, orn_type);
 			aSelf.bindEvents();
 			gs.spinner.hide();
         });
@@ -43,9 +47,6 @@ gs.ornaments = {
 	},
 	bindEvents: function(){
 		var aSelf = gs.ornaments;
-		$('#addNewOrn').on('click', function(e){
-
-		});
 		$('.ornState').off().on('change', function(e){
 			$(this).closest('tr').toggleClass('enabledOrn disabledOrn');
 		});
@@ -53,6 +54,9 @@ gs.ornaments = {
 			$(this).find('.ornament-actions-bar').show();
 		}).delegate('tr', 'mouseout', function(e) {		    
 		    $(this).find('.ornament-actions-bar').hide()
+		});
+		$('.orn_type').on('change', function(){
+			aSelf.refreshAutoCompleter();
 		});
 		$('.delete-icon').off().on('click', function(e){
 			function afterPopupHidden(){
@@ -111,11 +115,21 @@ gs.ornaments = {
 			function setInputFocus(){
 				$('.ornInputField').focus();
 			}
-			var newOrnName = $('.ornInputField').val();
+			var temp = $('.orn_type').val()
+			var orn_type = $('.orn_type option[value='+ temp +']').text() || 'G';
+			var newOrnName = orn_type + " " + $('.ornInputField').val();
+
 			if(newOrnName == ''){
 				gs.popup.init({
 		           	title: 'Alert',
 					desc: 'Please Enter Ornament Name in the Input',
+					dismissBtnText: 'OK',
+					onHiddenCallback: setInputFocus
+		        });
+			}else if(aSelf.isAlreadyExists(newOrnName)){
+				gs.popup.init({
+		           	title: 'Already Exists !',
+					desc: 'The Ornament '+ newOrnName + ' already exists. Give unique ornament name ! ',
 					dismissBtnText: 'OK',
 					onHiddenCallback: setInputFocus
 		        });
@@ -129,6 +143,9 @@ gs.ornaments = {
 		        });
 			}
 		});
+		/*$('#ornamentsContent .updateBtn').on('click', function(e){
+				
+		});*/
 	},
 	confirmDelete: function(){
 		var aSelf = gs.ornaments;
@@ -261,5 +278,20 @@ gs.ornaments = {
             gs.spinner.hide();
         });
         application.core.call(request, callBackObj);
-	}
+	},
+
+	isAlreadyExists: function(newOrnName){
+		var aSelf = gs.ornaments;
+		var isExists = false;
+		if(aSelf.storage.indexOf(newOrnName) != -1)
+			isExists = true;
+		return isExists;
+	},
+
+	refreshAutoCompleter: function(){
+		var aSelf = gs.ornaments;
+		var temp = $('.orn_type').val()
+		var orn_type = $('.orn_type option[value='+ temp +']').text();
+		gs.autocompleter.fillOrnamentsLst(aSelf.storage, orn_type);
+	},
 }
