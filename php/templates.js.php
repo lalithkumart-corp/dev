@@ -14,4 +14,6 @@ var template_htmlstr_webcam = <?php echo jsonStringify('../templates/htmlstr_web
 
 var template_htmlstr_tally = <?php echo jsonStringify('../templates/htmlstr_tally.html'); ?> ;
 
-var template_htmlstr_pendingAmt = <?php echo jsonStringify('../templates/htmlstr_pendingAmt.html'); ?> ; 
+var template_htmlstr_pendingAmt = <?php echo jsonStringify('../templates/htmlstr_pendingAmt.html'); ?> ;
+
+var template_htmlstr_webcam_container_popup = <?php echo jsonStringify('../templates/htmlstr_webcam_container_popup.html'); ?> ; 

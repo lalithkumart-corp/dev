@@ -346,7 +346,6 @@ gs.pledgeBook = {
         application.bill.creation.bindImageRelations();
         application.bill.creation.bindCustIdCreations();
         application.bill.creation.bindTraverseEvents();
-        $('.imageControls .takeSelfie').hide();
 
         //bind amount field
         $('#ammout').blur(function(e){

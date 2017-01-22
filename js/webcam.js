@@ -247,6 +247,10 @@ gs.webcamModel = {
 				$('#webModalContainer').modal('hide');
 			});
 
+			$('.dismissWebcam').on('click', function(e){
+				gs.webcamModel.dismiss();
+			});
+
 			//after taking snap call show image
 			webcam.set_hook( 'onComplete', function(img){
 				var tt = JSON.parse(img);
@@ -257,5 +261,9 @@ gs.webcamModel = {
 				//reset camera for the next shot
 				webcam.reset();
 			});
+	},
+	dismiss: function(){
+		$('#webcam-modal-container').remove();
+		$('.webcam-modal-overlay').remove();
 	}
 }

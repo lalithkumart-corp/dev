@@ -318,14 +318,17 @@ application.bill.creation = {
         $("#myForm").ajaxForm(self.options);
 
         $('.takeSelfie').on('click', function(e){
-            $('#webModalContainer').modal('show');
+            /*$('#webModalContainer').modal('show');
              $('#webModalContainer').on('shown.bs.modal', function () {
                   var obj = {};
                   $('#webModalContainer .modal-body').html(_.template(template_htmlstr_webcam, obj));
                   gs.webcamModel.init();
             });
             $('#webModalContainer').on('hidden.bs.modal', function () {
-            });
+            });*/
+            var obj = {};
+            $('body').append(_.template(template_htmlstr_webcam_container_popup, obj));
+            gs.webcamModel.init();
         });
     },
 

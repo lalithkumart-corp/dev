@@ -1,0 +1,82 @@
+.webcam-modal-overlay{
+    display: none;
+    position: fixed;
+    top: 0;
+    height: 100% !important;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 1003;
+    background: transparent url(/images/overlay-pixel.png) 0 0 repeat;
+    display: none;
+}
+#webcam-modal-container{
+    display: none;
+    margin: 0 auto;
+    width: 800px;
+    height: auto;
+    background-color: white;
+    z-index: 10005;
+    display: block;
+    position: fixed;
+    top: 10%;
+    left: calc(50% - 400px);
+    border: 2px solid rgb(181, 172, 172);
+    border-radius: 8px;
+}
+#webcam-header{
+    height: 40px;
+    text-align: center;
+    font-size: 18px;
+}
+#webcam-body{
+    padding: 28px;
+}
+#camera_wrapper{
+    width: 100%;
+    height: 350px;
+}
+#camera{
+    width: 350px;
+    float: left;
+    height: 350px;
+}
+#show_saved_img{
+    margin-left: 40px;
+    float: left;
+}
+#webcam_movie , #show_saved_img{
+    width: 350px;
+    height: 350px;
+}
+#camera_controls{
+    padding-top: 20px;
+}
+#webcam-header .dismissWebcam{
+    width: 16px;
+    float: right;
+    margin-top: -7px;
+    margin-right: -7px;
+    background-color: grey;
+    border-radius: 10px;
+    cursor: pointer;
+}
+/*webcam css PHp*/
+/*#camera_wrapper, #show_saved_img{float:left; width: 100%;}*/
+
+#show_saved_img img{
+    max-width: 350px;
+    max-height: 350px;
+}
+
+#camera{
+    width: 350px;
+    float: left;
+}
+#camera_controls{
+    text-align: center;
+}
+#webcamReset, #deletePhoto , #savePhoto{
+    display: none;
+}
+/*END: webcam css PHp*/

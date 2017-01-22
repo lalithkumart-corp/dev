@@ -550,7 +550,7 @@ span.hiddenclosed , span.hiddenopen{
 }
 
 /*webcam css PHp*/
-#camera_wrapper, #show_saved_img{float:left; width: 100%;}
+/*#camera_wrapper, #show_saved_img{float:left; width: 100%;}
 #webcam_movie , #show_saved_img{
         width: 350px;
     height: 350px;
@@ -572,7 +572,7 @@ span.hiddenclosed , span.hiddenopen{
 }
 #webcamReset, #deletePhoto , #savePhoto{
     display: none;
-}
+}*/
 /*END: webcam css PHp*/
 
 .imageControls{
