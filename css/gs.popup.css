@@ -23,6 +23,9 @@
     left: calc(50% - 250px);
     outline: 15px solid rgb(181, 172, 172);
 }
+.msgModalContainer .error{
+    color: red;
+}
 #msgHeaderDiv{
     padding-top: 10px;
     padding-left: 10px;

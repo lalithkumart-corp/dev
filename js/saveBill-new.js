@@ -373,21 +373,28 @@ application.bill.creation = {
                  dismissBtnText: 'Ok'
                 });
             return;
+        }else{
+            gs.popup.init(
+                {
+                 title: 'Confirmation',
+                 desc: 'Are you sure to add this record in Database ' ,
+                 dismissBtnText: 'No',
+                 buttons: ['Yes'],
+                 callbacks: [saveEntry]
+                });
         }
-
         var self = application.bill.creation;
         var entryList = {};
-        var callBackObj = application.core.getCallbackObject();
-        var request = application.core.getRequestData('../php/interest.php', '' , 'POST');
-        callBackObj.bind('api_response', function(event, response){
-            debugger;
-           entryList = self.getEntries(response);
-           saveIntoDB();
-        });
-        //if(self.current_int_rate != '')
+        function saveEntry(){
+            gs.popup.hide();
+            var callBackObj = application.core.getCallbackObject();
+            var request = application.core.getRequestData('../php/interest.php', '' , 'POST');
+            callBackObj.bind('api_response', function(event, response){
+               entryList = self.getEntries(response);
+               saveIntoDB();
+            });
             application.core.call(request, callBackObj);
-        /*else
-            callBackObj.trigger('api_response', {})*/
+        }
         
         function saveIntoDB(){
             var callBackObj = application.core.getCallbackObject();
@@ -396,14 +403,19 @@ application.bill.creation = {
                 var responseData = JSON.parse(response)[0];
                 if(responseData.status == 'success'){                
                     self.updateLastBillNumber();
-                    self.updateLastSerialNumber();          
-                    setTimeout(function(){
-                        self.clearFields();
-                        self.bindNecessaryEvents();
-                    },300);
-                    alert('success '+ responseData.status_msg);                
+                    self.updateLastSerialNumber();
+                    gs.popup.init(
+                        {
+                         title: 'Success',
+                         desc: 'New Bill has been created sccesfully ! ' ,
+                         dismissBtnText: 'OK',
+                         onHiddenCallback: function(){
+                                            self.clearFields();
+                                            self.bindNecessaryEvents();
+                                        }
+                        });          
                 }else{
-                    alert('Error '+ responseData.status_msg);
+                    gs.popup.showMsg('<b class="error">Error</b>', responseData.status_msg, 'OK', 'bounce');
                 }
             });
             application.core.call(request, callBackObj);

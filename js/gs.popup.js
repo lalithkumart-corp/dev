@@ -12,59 +12,68 @@ gs.popup = {
 		text 	: '',
 		header 	: ''
 	},
-	onShownCallback: this.shown,
 	dismissButtonId: 'msgDismissButton',
+	enableHtml: true,
 	init: function(options){
+		var $popup = gs.popup;
 		if(_.isUndefined(options))
 			var options = {};
-		this.msgDescription = options.desc || '';
-		this.msgHeader = options.title || '';
-		this.buttons = options.buttons || '';
-		this.callbacks = options.callbacks;
-		this.onHiddenCallback = options.onHiddenCallback || this.onHidden;
-		this.onShownCallback = options.onShownCallback || this.onShown;
-		this.dismissBtnText = options.dismissBtnText || 'Cancel';
-		this.enableHtml = !_.isUndefined(options.enableHtml)?options.enableHtml:true;
+		$popup.hide();
+		$popup.msgDescription = options.desc || '';
+		$popup.msgHeader = options.title || '';
+		$popup.buttons = options.buttons || '';
+		$popup.callbacks = options.callbacks;
+		$popup.onHiddenCallback = options.onHiddenCallback || '';
+		$popup.onShownCallback = options.onShownCallback || '';
+		$popup.dismissBtnText = options.dismissBtnText || 'Cancel';
+		$popup.enableHtml = !_.isUndefined(options.enableHtml)?options.enableHtml:true;
+		$popup.animationObj.init(options);	
+		$popup.renderPopup();
+	},
+	renderPopup: function(){
+		var $popup = gs.popup;
 		var property = {};
 		var template = _.template(template_htmlstr_msgBox, property);
 		$('body').append(template);
-		this.addTitle();
-		this.addDescription();
-		this.createButtons();		
-		this.show();
-		this.bindEvents();
+		$popup.addTitle();
+		$popup.addDescription();
+		$popup.createButtons();		
+		$popup.show();
+		$popup.bindEvents();
 	},
 	addTitle: function(){
-		if(this.enableHtml)
-			$(this.selectors.title).html(this.msgHeader);
+		var $popup = gs.popup;
+		if($popup.enableHtml)
+			$($popup.selectors.title).html($popup.msgHeader);
 		else
-			$(this.selectors.title).text(this.msgHeader);
+			$($popup.selectors.title).text($popup.msgHeader);
 	},
 	addDescription: function(){
-		if(this.enableHtml)
-			$(this.selectors.msgBody).html(this.msgDescription);
+		var $popup = gs.popup;
+		if($popup.enableHtml)
+			$($popup.selectors.msgBody).html($popup.msgDescription);
 		else
-			$(this.selectors.msgBody).text(this.msgDescription);
+			$($popup.selectors.msgBody).text($popup.msgDescription);
 	},
 	createButtons: function(){
-		var aSelf = this;
-		if(!_.isUndefined(aSelf.buttons)){
-			_.each(aSelf.buttons, function(value, index){
+		var $popup = gs.popup;
+		if(!_.isUndefined($popup.buttons)){
+			_.each($popup.buttons, function(value, index){
 				var aButtonHtml = '<input type="button" id="btn'+index+value+'" value= "'+value+'"/>'
 				$('#msgFooterDiv').append(aButtonHtml);
 			});
 		}
 
 		//add default cancel button
-		var dismissBtn = '<input type="button" id="'+this.dismissButtonId+'" value="'+aSelf.dismissBtnText+'"/>';
+		var dismissBtn = '<input type="button" id="'+$popup.dismissButtonId+'" value="'+$popup.dismissBtnText+'"/>';
 		$('#msgFooterDiv').append(dismissBtn);
 	},
 	bindEvents: function(){
-		var aSelf = this;
-		if(!_.isUndefined(aSelf.buttons)){
-			_.each(aSelf.buttons, function(value, index){
+		var $popup = gs.popup;
+		if(!_.isUndefined($popup.buttons)){
+			_.each($popup.buttons, function(value, index){
 				$('#btn'+index+value).on('click', function(event){
-					var callBackMeth = aSelf.callbacks[index];
+					var callBackMeth = $popup.callbacks[index];
 					if(!_.isUndefined(callBackMeth))
 						callBackMeth();
 				});
@@ -73,34 +82,98 @@ gs.popup = {
 		
 
 		$('#'+this.dismissButtonId).off().on('click', function(){
-			aSelf.hide();
+			$popup.hide();
 		});
 	},
 	show: function(callback){
-		$(this.selectors.overlay).show();
-		$(this.selectors.container).show();
-		this.onShown();
+		var $popup = gs.popup;
+		debugger;
+		$($popup.selectors.overlay).show();
+		$($popup.selectors.container).show();
+		$popup.animationObj.showAnimation();
+		$popup.onShown();
 	},
 	onShown: function(){
-		var aSelf = this;
-		$('#'+this.dismissButtonId).focus();
-		if(!_.isUndefined(aSelf.onShownCallback)){
-			var callBackMeth = aSelf.onShownCallback;
+		var $popup = gs.popup;
+		$popup.setBtnFocus();
+		if(!_.isUndefined($popup.onShownCallback) && $popup.onShownCallback !== ''){
+			var callBackMeth = $popup.onShownCallback;
 			callBackMeth();
 		}
 	},
+	setBtnFocus: function(){
+		var $popup = gs.popup;
+		console.log($('#'+$popup.dismissButtonId));
+		$('#msgFooterDiv input')[0].focus();
+	},
 	hide: function(){
-		if($(this.selectors.container).length != -1){			
-			$(this.selectors.container).remove();
-			$(this.selectors.overlay).remove();
-			this.onHidden();
+		var $popup = gs.popup;
+		if($($popup.selectors.container).length != -1){			
+			$($popup.selectors.container).remove();
+			$($popup.selectors.overlay).remove();
+			$popup.onHidden();
+			$popup.clearObjects();
 		}
 	},
 	onHidden: function(){
-		var aSelf = this;
-		if(!_.isUndefined(aSelf.onHiddenCallback)){
-			var callBackMeth = aSelf.onHiddenCallback;
+		var $popup = gs.popup;
+		if(!_.isUndefined($popup.onHiddenCallback) && $popup.onHiddenCallback !== ''){
+			var callBackMeth = $popup.onHiddenCallback;
 			callBackMeth();
 		}
+	},
+	clearObjects: function(){
+		var $popup = gs.popup;
+		$popup.msgDescription = '';
+		$popup.msgHeader = '';
+		$popup.buttons = '';
+		$popup.callbacks = [];
+		$popup.onHiddenCallback = '';
+		$popup.onShownCallback = '';
+		$popup.dismissBtnText = 'Cancel';
+		$popup.enableHtml = true;
+		$popup.animationObj.effect = '';
+	},
+	animationObj: {
+		effect: '',
+		init: function(options){
+			var $animation = gs.popup.animationObj;
+			if(!_.isUndefined(options.animate))
+				$animation.effect = options.animate;
+		},
+		showAnimation: function(){
+			var $animation = gs.popup.animationObj;
+			switch($animation.effect){
+				case 'bounce':
+					$animation.bounce();
+					break;
+				case 'blinkingIn':
+					$animation.blinkingIn();
+					break;
+				case 'blinkingOut':
+					$animation.blinkingOut();
+					break;
+			}
+		},
+		bounce: function(){
+			$(gs.popup.selectors.container).fadeIn(100).animate({top:"-=20px"},100).animate({top:"+=20px"},100).animate({top:"-=20px"},100).animate({top:"+=20px"},100).animate({top:"-=20px"},100).animate({top:"+=20px"},100);
+		},
+		blinkingIn: function(){
+			$(gs.popup.selectors.container).fadeIn(100).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
+		},
+		blinkingOut: function(){
+			$(gs.popup.selectors.container).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100).fadeOut(100);
+		}
+	},
+
+	//short and quick method to just show a msg
+	showMsg: function(title, description, btnText, animate){
+		var $popup = gs.popup;
+		$popup.hide();
+		$popup.msgDescription = description;
+		$popup.msgHeader = title;
+		$popup.dismissBtnText = btnText;
+		$popup.animationObj.effect = animate || '';
+		$popup.renderPopup();
 	}
 }
