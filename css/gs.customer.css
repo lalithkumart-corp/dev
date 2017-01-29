@@ -1,0 +1,26 @@
+.mainContent.editCustDetails{
+	/*width: 100%;*/
+}
+.feildName{
+	padding: 0px;
+}
+.custIdVal{
+	width: 80px;
+}
+#cust-details-container .editImg{
+	display: block;
+}
+#cust-details-container .details-container{
+	border: 1px solid;
+    border-radius: 5px;
+    padding-top: 12px;
+    padding-bottom: 25px;
+    margin-top: 5px;
+}
+.search-customer, .get-cid{
+	width: 14px;
+	cursor: pointer;
+}
+#updateCustDetails{
+	border-radius: 6px;
+}

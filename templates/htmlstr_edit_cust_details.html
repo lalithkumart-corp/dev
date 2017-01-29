@@ -1,0 +1,77 @@
+<div id="cust-details-container" class='col-sm-12'>
+	<div class="row">
+
+	</div>
+	<div class="row">
+		<div class='col-sm-2'>
+			<input type="text" placeholder="Customer id" class="custIdVal"/>
+			<img src="../images/search-icon.png" class="search-customer"/>
+			<img src="../images/question-mark.png" class="get-cid"/>
+		</div>
+		<div class="col-sm-10 details-container">
+			<div class='col-sm-7'>
+				<div class="row">
+					<label class="col-sm-4 feildName">Customer Name:</label>
+					<input class = "col-sm-7 cname_val" type="text" placeholder="Customer Name"  />
+				</div>
+				<div class="row">
+					<label class="col-sm-4 feildName">Father/Gaurdian Name:</label>
+					<input class = "col-sm-7 fgname_val" type="text" placeholder="Father/Gaurdian Name"  />
+				</div>
+				<div class="row">
+					<label class="col-sm-4 feildName">Address1:</label>
+					<input class = "col-sm-7 addr1_val" type="text" placeholder="Address1"  />
+				</div>
+				<div class="row">
+					<label class="col-sm-4 feildName">Address (old)</label>
+					<input class = "col-sm-7 addr_old_val" type="text" placeholder="Additional address" />
+				</div>
+				<div class="row">
+					<label class="col-sm-4 feildName">Address2:</label>
+					<input class = "col-sm-7 addr2_val" type="text" placeholder="Address2" />
+				</div>
+				<div class="row">
+					<label class="col-sm-4 feildName">Place:</label>
+					<input class = "col-sm-7 place_val" type="text" placeholder="Place" />
+				</div>
+				<div class="row">
+					<label class="col-sm-4 feildName">Mobile (default):</label>
+					<input class = "col-sm-7 mobile_val" type="text" placeholder="Mobile" />
+				</div>
+				<div class="row">
+					<label class="col-sm-4 feildName">Mobile (2):</label>
+					<input class = "col-sm-7 mobile2_val" type="text" placeholder="Mobile 2" />
+				</div>
+				<div class="row">
+					<label class="col-sm-4 feildName">Mobile (3):</label>
+					<input class = "col-sm-7 mobile3_val" type="text" placeholder="Mobile 3" />
+				</div>
+				<div class="row">
+					<label class="col-sm-4 feildName">Pincode:</label>
+					<input class = "col-sm-7 pincode_val" type="text" placeholder="Pincode" />
+				</div>
+				<div class="row">
+					<input type="button" id='updateCustDetails' value="Update" disabled />
+				</div>
+			</div>
+			<div class='col-sm-5'>
+				<div class="item-image"><img class="center-block" src="/uploads/default.jpg"></div>
+				<input type="image" class="confirmImg" src="/images/toggle_up.png"/>
+				<input type="image" class="editImg" src="/images/toggle_down.png"/>
+				<div class='imageControls'>
+					<input type="image" class="clearImg" src="/images/clear.png"/>
+					<input type="image" class="takeSelfie" src="/images/camera.png"/>
+					<form id="myForm" action="../php/upload.php" method="post" enctype="multipart/form-data">
+			    		 <input type="file" size="60" name="myfile" class="fileChooser" style="width: 90%; margin-left: 20px;">
+			    		 <input type="submit" value="Upload" style="float: left; margin-left: 20px;">
+			 		</form>
+				  	</br>
+				 	<div id="progress">
+				        <div id="bar"></div>
+				        <div id="percent">0%</div >
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

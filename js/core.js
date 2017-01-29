@@ -94,6 +94,15 @@ application.core ={
 			$('.mainContent').html(template);
 		});
 
+		$('#tool-edit-cust-detail').on('click', function(e){
+			aSelf.updatePageName('editCustDetails');
+			var property = {};
+			var template = _.template(template_htmlstr_edit_cust_details, property);
+			$('.mainContent').html(template);
+			gs.customer.init();
+		});
+		
+
 		this.getNecessaryDatas();
 	},
 
@@ -190,6 +199,7 @@ application.core ={
 	updatePageName: function(currentPageName){
 		this.removePageName();
 		$('.mainContent').addClass(currentPageName);
+		$('.databaseError').hide();
 	},
 
 	getCurrentPageName: function(){

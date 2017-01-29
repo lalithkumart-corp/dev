@@ -11,7 +11,12 @@ if (!$link) {
 }
 
 $sql = $_POST['aQuery'];
-$result = $link->query($sql);
+if( isset($_POST['multiQuery']) && ($_POST['multiQuery'] == true) ){
+	$result = mysqli_multi_query($link, $sql);
+}else{
+	$result = $link->query($sql);	
+}
+
 
 $stack = array();
 if(is_object($result)){

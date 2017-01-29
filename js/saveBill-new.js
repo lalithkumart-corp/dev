@@ -277,7 +277,7 @@ application.bill.creation = {
         $('.editImg').on('click', function(){
             $('.imageControls').fadeIn();
             $(this).hide();
-            $('.confirmImg').show();
+            $('.confirmImg').css('display','block');
             /*$('#myForm').show();
             $('.clearImg').show();
             $('#progress').show();
@@ -287,7 +287,7 @@ application.bill.creation = {
         $('.confirmImg').on('click', function(){
             $('.imageControls').fadeOut();
             $(this).hide();
-            $('.editImg').show();
+            $('.editImg').css('display','block');
             /*$('#myForm').hide();
             $('.clearImg').hide();
             $('#progress').hide();
@@ -960,6 +960,7 @@ application.bill.creation = {
             $('#place').val(data.place || application.core.defaults.place);
             $('#pincode').val(data.pincode || application.core.defaults.pincode);
             $('#mobNo').val(data.mobile);
+            $('.item-image img').attr('src', data.profilepicpath);
             $('#custId').hasClass('new')? $('#custId').removeClass('new'): '';
         });
         application.core.call(request, callBackObj);

@@ -17,3 +17,5 @@ var template_htmlstr_tally = <?php echo jsonStringify('../templates/htmlstr_tall
 var template_htmlstr_pendingAmt = <?php echo jsonStringify('../templates/htmlstr_pendingAmt.html'); ?> ;
 
 var template_htmlstr_webcam_container_popup = <?php echo jsonStringify('../templates/htmlstr_webcam_container_popup.html'); ?> ; 
+
+var template_htmlstr_edit_cust_details = <?php echo jsonStringify('../templates/htmlstr_edit_cust_details.html'); ?> ; 
