@@ -16,7 +16,7 @@ gs.ornaments = {
 		function getActionsHtml(){
 			var aRow = '<div class="ornament-actions-bar">';
 			aRow += '<input type="checkbox" title="Select" class="select-deselect-Orn"/>';
-			aRow += '<input type="checkbox" title="Disable this ornament" class="ornState" id="ornStatus"/><label for="ornStatus"></label>';
+			//aRow += '<input type="checkbox" title="Disable this ornament" class="ornState" id="ornStatus"/><label for="ornStatus"></label>';
 			aRow += '<img class="edit-icon" src="/images/edit-icon.png" title="Edit this Ornament Name"></img>';
 			aRow += '<img class="delete-icon" src="/images/delete-icon.png" title="Delete this Ornament"></img>';
 			aRow += '</div>';
