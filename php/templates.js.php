@@ -18,4 +18,8 @@ var template_htmlstr_pendingAmt = <?php echo jsonStringify('../templates/htmlstr
 
 var template_htmlstr_webcam_container_popup = <?php echo jsonStringify('../templates/htmlstr_webcam_container_popup.html'); ?> ; 
 
-var template_htmlstr_edit_cust_details = <?php echo jsonStringify('../templates/htmlstr_edit_cust_details.html'); ?> ; 
+var template_htmlstr_edit_cust_details = <?php echo jsonStringify('../templates/htmlstr_edit_cust_details.html'); ?> ;
+
+var template_htmlstr_customer_cid_table = <?php echo jsonStringify('../templates/htmlstr_customer_cid_table'); ?>;
+
+var template_htmlstr_common_popup = <?php echo jsonStringify('../templates/htmlstr_common_popup.html'); ?> ; 

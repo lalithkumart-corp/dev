@@ -24,3 +24,58 @@
 #updateCustDetails{
 	border-radius: 6px;
 }
+.customerCidPopup{
+	width: 1000px !important;
+	left: calc(50% - 500px);
+}
+#commonModalBodyDiv{
+	overflow-x: hidden;
+	height: 530px !important;
+}
+.customerCidPopup table thead{
+	/*position: fixed;
+	margin-top: -30px;*/
+}
+/*.customerCidPopup table input{
+	background-color: wheat;
+}*/
+.customerCidPopup{
+	padding: 10px;
+}
+.customerCidPopup table input.serialNo,
+.customerCidPopup table input.cid{
+	width: 70px;
+}
+.customerCidPopup table input.CustomerName,
+.customerCidPopup table input.FatherName{
+	width: 190px;
+}
+.customerCidPopup table input.Address{
+	width: 370px;
+}
+.customerCidPopup table input.serialNo,
+.customerCidPopup table input.cid,
+.customerCidPopup table input.CustomerName,
+.customerCidPopup table input.FatherName,
+.customerCidPopup table input.Address{
+	border: 1px solid;
+	margin: 10px 0px;
+}
+#customerCidListTable_filter{
+	padding-right: 18px;
+}
+
+#customerCidListTable thead th{
+	text-align: center;
+}
+.customerCidPopup .commonModalFooterDiv input{
+	margin: 0px 7px;
+	width: 100px;
+	text-align: center;
+}
+.cidSelected{
+	background-color: lightgrey !important;
+}
+.sorting_1{
+	cursor: pointer;
+}

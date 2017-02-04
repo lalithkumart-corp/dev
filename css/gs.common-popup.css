@@ -1,0 +1,20 @@
+.commonModalContainer{
+	position: fixed;
+	z-index: 1004;
+	background-color: white;
+	width: 500px;
+}
+#commonModalHeaderDiv{
+	height: 24px;
+	text-align: center;
+	font-size: 17px;
+}
+#commonModalBodyDiv{
+	height: 200px;
+}
+.commonModalFooterDiv{
+	text-align: center;
+}
+.customerCidPopup table thead th{
+	text-align: center;
+}

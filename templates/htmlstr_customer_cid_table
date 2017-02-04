@@ -1,0 +1,45 @@
+<table id="customerCidListTable" class="display" cellspacing="0" width="100%">
+	<colgroup>
+		<col style="width: 50px">
+		<col style="width: 50px">
+		<col style="width: 100px">
+		<col style="width: 100px">
+		<col style="width: 200px">
+	</colgroup>
+	<thead>
+        <tr>
+        	<th>S No</th>
+        	<th>CID</th>
+            <th>Customer Name</th>
+            <th>Care of</th>
+            <th>Address</th>
+        </tr>
+        <tr id="filterData">
+        	<th></th>
+            <th>cid</th>
+            <th>CustomerName</th>
+            <th>FatherName</th>
+            <th>Address</th>
+        </tr>
+    </thead>
+    <tbody>
+    	<%
+    	var row = 0, cids=[]; 
+    	_.each(customerList, function(value, index){
+    		if(value.custid !== '' && value.custid !== null){
+	    		if(cids.indexOf(value.custid) == -1){
+		    		cids.push(value.custid);
+		    		row+= 1; %>
+		    		<tr>
+		    			<td> <%= row %> </td>
+		    			<td> <%= value.custid %> </td>
+		    			<td> <%= value.cname %> </td>
+		    			<td> <%= value.fgname %> </td>
+		    			<td> <%= value.address %> </td>
+		    		</tr>
+		    	<% }
+    		} 
+    	});
+    	%>
+    </tbody>
+</table>

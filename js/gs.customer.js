@@ -3,9 +3,11 @@ if(typeof gs == 'undefined'){
 }
 gs.customer = {
 	rawDetails: {},
+	totalCustomerList: {},
 	currentCid: '',
 	init: function(){
 		this.bindEvents();
+		this.totalCustomerList = {};
 	},
 	bindEvents: function(){
 		var $customer = gs.customer;
@@ -24,6 +26,9 @@ gs.customer = {
 				if($customer.currentCid !== '')
 					$customer.search();
             }           
+        });
+        $('.get-cid').on('click', function(e){
+        	$customer.initCustomersCidPopup();        	
         });
 		application.bill.creation.bindImageRelations();
 	},
@@ -56,6 +61,7 @@ gs.customer = {
 		$('#updateCustDetails').prop("disabled",false);
 	},
 	clearDetails: function(){
+		var $customer = gs.customer;
 		$('.custIdVal').val('');
 		$('.cname_val').val('');
 		$('.fgname_val').val('');
@@ -69,6 +75,7 @@ gs.customer = {
 		$('#cust-details-container .item-image img').attr('src', gs.app.DEFAULT_PROFILE_PIC_PATH);
 		$('#updateCustDetails').prop("disabled",true);
 		$('.custIdVal').focus();
+		$customer.rawDetails = {};
 	},
 	getDetails: function(){
 		var $customer = gs.customer;
@@ -106,5 +113,92 @@ gs.customer = {
                 });
 		});
 		application.core.call(request, callBackObj);
+	},
+	initCustomersCidPopup: function(){
+		var $customer = gs.customer;
+		if(!_.isEmpty($customer.totalCustomerList)){
+			$customer.openCIDTable();
+		}else{
+			var callBackObj = application.core.getCallbackObject();
+			var request = application.core.getRequestData('../php/getPledgebook.php', {} , 'POST');
+			callBackObj.bind('api_response', function(event, response){
+				$customer.totalCustomerList = JSON.parse(response);
+				$customer.openCIDTable();
+			});
+			application.core.call(request, callBackObj);
+		}			
+	},
+	openCIDTable: function(){
+		var $customer = gs.customer;
+		var customerList = $customer.totalCustomerList;
+		var options = {};
+		options.title= "Select Customer...";
+		options.body = _.template(template_htmlstr_customer_cid_table, {customerList: customerList});
+		options.buttons = ['OK'];
+		options.onShownCallback = $customer.onPopupShown;
+		options.className = "customerCidPopup"
+		gs.commonPopup.init(options);
+		$customer.bindCidTableEvents();
+	},
+	onPopupShown: function(){
+		gs.customer.asDataTable();
+		$('#btn0OK').prop('disabled',true);
+	},
+	asDataTable: function(){
+		var $customer = gs.customer;
+		$('#customerCidListTable thead tr#filterData th').not(":eq(0)").each( function () {
+        	var title = $('#customerCidListTable thead tr#filterData th').eq( $(this).index() ).text();
+        	$(this).html( '<input type="text" class="'+title+'" onclick="event.stopPropagation();" placeholder="'+title+'" />' );
+    	});
+    	$("#customerCidListTable thead input[type='text']").on( 'keyup change', function () {
+	        table
+	            .column( $(this).parent().index()+':visible' )
+	            .search( this.value )
+	            .draw();
+	    });
+
+		var table = $("#customerCidListTable").on( 'init.dt', function () {
+               $customer.tableComplete();
+            }).DataTable({
+                paging: false,
+                scrollY: 400,
+                scrollCollapse: true,
+                     aoColumns : [
+                      { "sWidth": "4%"},
+                      { "sWidth": "8%"},
+                      { "sWidth": "18%"},
+                      { "sWidth": "18%"},
+                      { "sWidth": "34%"}
+                    ]
+        	});
+        $customer.table = table;
+
+        $('#customerCidListTable tbody').on( 'click', 'td.sorting_1', function () {
+                $('#customerCidListTable tbody .cidSelected').removeClass('cidSelected');
+                $(this).parent().addClass('cidSelected');
+                $('#btn0OK').prop('disabled', false);
+        });
+       
+	},
+	tableComplete: function(){
+		var $customer = gs.customer;
+		if(typeof $customer.table != 'undefined' && !_.isEmpty($customer.table)){
+            $customer.table.draw();
+        }else{
+            setTimeout(function(){
+                $customer.tableComplete();
+            },200);
+        }
+	},
+	bindCidTableEvents: function(){
+		var $customer = gs.customer;
+		$('#btn0OK').on('click', function(){			
+			var cid = $('#customerCidListTable tbody tr.cidSelected td:eq(1)').text().trim();
+			gs.commonPopup.hide();
+			$customer.currentCid = cid;
+			$('.custIdVal').val(cid);
+			if($customer.currentCid !== '')
+					$customer.search();
+		});
 	}
 }
