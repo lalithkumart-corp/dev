@@ -23,3 +23,5 @@ var template_htmlstr_edit_cust_details = <?php echo jsonStringify('../templates/
 var template_htmlstr_customer_cid_table = <?php echo jsonStringify('../templates/htmlstr_customer_cid_table'); ?>;
 
 var template_htmlstr_common_popup = <?php echo jsonStringify('../templates/htmlstr_common_popup.html'); ?> ; 
+
+var template_htmlstr_cust_detail_bill_table = <?php echo jsonStringify('../templates/htmlstr_cust_detail_bill_table.html'); ?> ; 

@@ -87,7 +87,6 @@ gs.popup = {
 	},
 	show: function(callback){
 		var $popup = gs.popup;
-		debugger;
 		$($popup.selectors.overlay).show();
 		$($popup.selectors.container).show();
 		$popup.animationObj.showAnimation();
@@ -103,7 +102,6 @@ gs.popup = {
 	},
 	setBtnFocus: function(){
 		var $popup = gs.popup;
-		console.log($('#'+$popup.dismissButtonId));
 		$('#msgFooterDiv input')[0].focus();
 	},
 	hide: function(){

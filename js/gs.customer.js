@@ -8,6 +8,7 @@ gs.customer = {
 	init: function(){
 		this.bindEvents();
 		this.totalCustomerList = {};
+		$('.custIdVal').focus();
 	},
 	bindEvents: function(){
 		var $customer = gs.customer;
@@ -17,9 +18,17 @@ gs.customer = {
 				$customer.search();
 		});
 		$('#updateCustDetails').on('click', function(e){
-			$customer.update();
+			gs.popup.init(
+            {
+	             title: 'Confirm !',
+	             desc: 'Are you sure to update this customer details ?</br> This will update the customer details in all over his Bills.' ,
+	             dismissBtnText: 'No',
+	             buttons: ['Update'],
+	             callbacks: [$customer.update],
+	             enableHtml: true
+            });
 		});
-		$('.custIdVal').on('keydown', function(e){
+		$('.custIdVal').off().on('keydown', function(e){
             var key = 'which' in e ? e.which : e.keyCode;
             if(key == 13){
             	$customer.currentCid = $('.custIdVal').val();
@@ -27,8 +36,23 @@ gs.customer = {
 					$customer.search();
             }           
         });
-        $('.get-cid').on('click', function(e){
+        $('.custIdVal').on('keyup', function(e){
+        	if($(this).val() !== '')
+        		$('.clearCustId').show();
+        	else
+        		$('.clearCustId').hide();
+        });
+        $('.get-cid').off().on('click', function(e){
         	$customer.initCustomersCidPopup();        	
+        });
+        $('#editCustDetails').off().on('click', function(e){
+        	$('#cust-details-container .fieldsOverlay').hide();
+        	$(this).hide();
+        	$('#updateCustDetails').show();
+        });
+        $('.clearCustId').off().on(' click', function(e){
+        	$customer.clearDetails();
+        	$('.clearCustId').hide();
         });
 		application.bill.creation.bindImageRelations();
 	},
@@ -42,7 +66,19 @@ gs.customer = {
 		  response = JSON.parse(response);
 		  $customer.rawDetails = response;
 		  var aRecord = response[0];
-		  $customer.fillDetails(aRecord);
+		  if(_.isUndefined(aRecord)){
+  				gs.popup.init(
+  	            {
+  		             title: 'Alert !',
+  		             desc: 'Not Exists! Please check the Customer Id.' ,
+  		             dismissBtnText: 'OK',
+  		             enableHtml: true,
+  		             onHiddenCallback: function(){
+					  		             	$('.custIdVal').focus();
+					  		             }
+  	            });
+		  }else
+		  	$customer.fillDetails(aRecord);
 		});
 		application.core.call(request, callBackObj);
 	},
@@ -58,7 +94,9 @@ gs.customer = {
 		$('.mobile3_val').val(aRecord.mobile3);
 		var picPath = aRecord.profilepicpath || gs.app.DEFAULT_PROFILE_PIC_PATH;
 		$('#cust-details-container .item-image img').attr('src', picPath);
-		$('#updateCustDetails').prop("disabled",false);
+		$('#editCustDetails').prop("disabled",false);
+		$('#cust-details-container .fieldsOverlay').show();
+		gs.customer.fillBillListTables();
 	},
 	clearDetails: function(){
 		var $customer = gs.customer;
@@ -73,9 +111,11 @@ gs.customer = {
 		$('.mobile2_val').val('');
 		$('.mobile3_val').val('');
 		$('#cust-details-container .item-image img').attr('src', gs.app.DEFAULT_PROFILE_PIC_PATH);
-		$('#updateCustDetails').prop("disabled",true);
+		$('#editCustDetails').prop("disabled",true);
+		$('#cust-details-container .fieldsOverlay').show();
 		$('.custIdVal').focus();
-		$customer.rawDetails = {};
+		$customer.totalCustomerList = {};
+		$('.customerBillListPanel .tab-pane').html('No Bills.');
 	},
 	getDetails: function(){
 		var $customer = gs.customer;
@@ -109,12 +149,18 @@ gs.customer = {
                  desc: '<p class="greenColor boldFont">Customer Detail updated Successfully !<p>' ,
                  dismissBtnText: 'Ok',
                  enableHtml: true,
-                 onHiddenCallback: gs.customer.clearDetails
+                 onHiddenCallback: gs.customer.toggleButtons
                 });
 		});
 		application.core.call(request, callBackObj);
 	},
+	toggleButtons: function(){
+		$('#editCustDetails').show();
+		$('#cust-details-container .fieldsOverlay').show();
+        $('#updateCustDetails').hide();
+	},
 	initCustomersCidPopup: function(){
+		gs.spinner.show();
 		var $customer = gs.customer;
 		if(!_.isEmpty($customer.totalCustomerList)){
 			$customer.openCIDTable();
@@ -123,7 +169,7 @@ gs.customer = {
 			var request = application.core.getRequestData('../php/getPledgebook.php', {} , 'POST');
 			callBackObj.bind('api_response', function(event, response){
 				$customer.totalCustomerList = JSON.parse(response);
-				$customer.openCIDTable();
+				$customer.openCIDTable();				
 			});
 			application.core.call(request, callBackObj);
 		}			
@@ -139,6 +185,7 @@ gs.customer = {
 		options.className = "customerCidPopup"
 		gs.commonPopup.init(options);
 		$customer.bindCidTableEvents();
+		gs.spinner.hide();
 	},
 	onPopupShown: function(){
 		gs.customer.asDataTable();
@@ -173,9 +220,9 @@ gs.customer = {
         	});
         $customer.table = table;
 
-        $('#customerCidListTable tbody').on( 'click', 'td.sorting_1', function () {
+        $('#customerCidListTable tbody tr').on( 'click', function () {
                 $('#customerCidListTable tbody .cidSelected').removeClass('cidSelected');
-                $(this).parent().addClass('cidSelected');
+                $(this).addClass('cidSelected');
                 $('#btn0OK').prop('disabled', false);
         });
        
@@ -197,8 +244,47 @@ gs.customer = {
 			gs.commonPopup.hide();
 			$customer.currentCid = cid;
 			$('.custIdVal').val(cid);
+			$('.clearCustId').show();
 			if($customer.currentCid !== '')
 					$customer.search();
 		});
+	},
+
+	fillBillListTables: function(){
+		var $customer = gs.customer;
+		$customer.createTable('pendingBillList');
+		$customer.createTable('closedBillList');
+		$customer.createTable('totalBillList');
+	},
+	createTable: function(category){
+		var $customer = gs.customer;
+		var data = $customer.rawDetails;
+		var container;
+		var filteredBills = [];
+		switch(category){
+			case 'pendingBillList': 
+				_.each(data, function(value,index){
+					if(value.status == 'open')
+						filteredBills.push(value);
+				});
+				container = '#PENDING';
+				break;
+			case 'closedBillList':
+				_.each(data, function(value,index){
+					if(value.status == 'closed')
+						filteredBills.push(value);
+				});
+				container = '#CLOSED';
+				break;
+			case 'totalBillList': 
+				filteredBills = data.slice(0);
+				container = '#TOTALBILLS';
+				break;
+		}
+		var property = {};
+		property.billList = filteredBills;
+		var htmlContent = _.template(template_htmlstr_cust_detail_bill_table, property);
+		$(container).html(htmlContent);
+		$("[data-toggle = 'item-popover']").popover({trigger: "click"});
 	}
 }

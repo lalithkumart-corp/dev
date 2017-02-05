@@ -2,13 +2,17 @@
 	<div class="row">
 
 	</div>
-	<div class="row">
-		<div class='col-sm-2'>
-			<input type="text" placeholder="Customer id" class="custIdVal"/>
+	<div class="row">		
+		<div class='col-sm-2 customerIdField'>
+			<div>
+				<input type="text" placeholder="Customer id" class="custIdVal"/>
+				<img src="../images/close-icon.png" class="clearCustId"/>
+			</div>
 			<img src="../images/search-icon.png" class="search-customer"/>
-			<img src="../images/question-mark.png" class="get-cid"/>
+			<img src="../images/question-mark.png" class="get-cid"/>			
 		</div>
 		<div class="col-sm-10 details-container">
+			<div class='col-sm-12 fieldsOverlay'></div>			
 			<div class='col-sm-7'>
 				<div class="row">
 					<label class="col-sm-4 feildName">Customer Name:</label>
@@ -51,7 +55,8 @@
 					<input class = "col-sm-7 pincode_val" type="text" placeholder="Pincode" />
 				</div>
 				<div class="row">
-					<input type="button" id='updateCustDetails' value="Update" disabled />
+					<input type="button" id='editCustDetails' value="edit" disabled />
+					<input type="button" id='updateCustDetails' value="Update"/>
 				</div>
 			</div>
 			<div class='col-sm-5'>
@@ -71,6 +76,24 @@
 				        <div id="percent">0%</div >
 					</div>
 				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row customerBillListPanel">
+		<ul class="nav nav-tabs">
+		    <li class="col-md-4 col-sm-4 col-xs-4 active"><a href="#PENDING" class="" data-toggle="tab"> Pending Bills</a></li>
+		    <li class="col-md-4 col-sm-4 col-xs-4 "><a href="#CLOSED" class="" data-toggle="tab"> Closed Closed</a></li>
+		    <li class="col-md-4 col-sm-4 col-xs-4 "><a href="#TOTALBILLS" class="" data-toggle="tab"> Total Bills</a></li>
+		</ul>
+		<div class='tab-content'>
+			<div id="PENDING" class='tab-pane active'>
+				No Bills.
+			</div>
+			<div id="CLOSED" class='tab-pane'>
+				No Bills.
+			</div>
+			<div id="TOTALBILLS" class='tab-pane'>
+				No Bills.
 			</div>
 		</div>
 	</div>

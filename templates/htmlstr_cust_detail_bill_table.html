@@ -1,0 +1,42 @@
+<table>
+		<colgroup>
+			<col style="width: 50px">
+			<col style="width: 100px">
+			<col style="width: 100px">
+			<col style="width: 100px">
+			<col style="width: 50px">
+		</colgroup>
+		<thead>
+			<tr>
+				<th>s.no</th>
+				<th>Date</th>
+				<th>BillNo</th>
+				<th>Amount</th>
+				<th>Details</th>
+			</tr>
+		</thead>
+		<tbody>
+			<%var serialNo = 1;
+			if(typeof billList !== 'undefined'){
+				_.each(billList, function(value, index){%>
+				<tr>
+					<td><%=serialNo %></td>
+					<td><%= value.dates%></td>
+					<td><%= value.billNo%></td>
+					<td><%= value.amount%></td>
+					<td>
+						<div class="ornamentPopover"
+							data-toggle = 'item-popover'
+							data-placement = 'right'
+							data-content = "<%= gs.pledgeBook.getDetails2(value)  %>"
+							data-html = "<%= gs.pledgeBook.getDetails2(value) %>"
+							data-title = "<p style='float :left;'><%= value.billNo%></p><p style='float :right;'><%= value.dates%></p>"
+						> Details
+						</div>
+					</td>
+				</tr>
+				<% serialNo+= 1;
+				});
+			}%>
+		</tbody>
+	</table>

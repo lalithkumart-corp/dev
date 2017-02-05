@@ -277,6 +277,26 @@ gs.pledgeBook = {
 			htmlContent += "</tbody></table></div>" ; 
 			return htmlContent;
 	},
+
+    //table for popover content without the 'SPECIFICATION' column
+    getDetails2 : function(value){
+        var totalOrnWt = value.netwt ? value.netwt : '-';
+            var htmlContent = "<div><table class='ornDesc'> <colgroup><col style='width: 15px'><col style='width: 70px'><col style='width: 20px'></colgroup><thead><th>S.No</th><th>Item <span id='totalOrnWt'>( "+totalOrnWt+" gm )</span></th><th>Nos</th></thead><tbody>"
+            if(value.ornaments != ''){
+                var totalOrns = value.ornaments.split(',');
+                _.each(totalOrns , function(ornValue, ornKey){
+                    var aOrn = ornValue.split(':'); 
+                    htmlContent += "<tr><td>"+ (ornKey+1) +"</td>";
+                     _.each(aOrn , function(values, keys){ 
+                        if(keys !== 1) //not to add 'specification' value.
+                            htmlContent +="<td>"+values+"</td>";
+                     }); 
+                    htmlContent += "</tr>";
+                })
+            } 
+            htmlContent += "</tbody></table></div>" ; 
+            return htmlContent;
+    },
 	
     parseDateValue : function(rawDate) {
         var dateArray= rawDate.split("/");

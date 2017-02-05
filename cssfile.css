@@ -304,11 +304,16 @@ input[type="text"]:focus, input[type="number"]:focus{
     table-layout: fixed;
     width: 100%;
 }
-#pendingDetails .popover{
+#pendingDetails .popover,
+.customerBillListPanel .popover{
     width: 550px;
     height: 200px;
     min-width: 550px;
     padding: 0px;
+}
+.customerBillListPanel .popover{
+    width: 330px;
+    min-width: 330px;
 }
 #pendingDetails{
     table-layout: fixed;
@@ -319,16 +324,17 @@ input[type="text"]:focus, input[type="number"]:focus{
 #pendingDetails .popover thead tr{
     border-top: none;
 }
-#pendingDetails .popover thead tr th{
+#pendingDetails .popover thead tr th,
+.customerBillListPanel .popover thead tr th{
     padding-left: 5px !important;
 }
-#pendingDetails .popover-content, .viewBillDetailsPopover .popover-content{
+#pendingDetails .popover-content, .viewBillDetailsPopover .popover-content,.customerBillListPanel .popover-content{
     border: 15px solid rgba(235, 235, 235, 0.9);
     height: calc(100% - 43px);
     border-top: none;
     overflow-x: hidden;
 }
-#pendingDetails .popover-title, .viewBillDetailsPopover .popover-title{
+#pendingDetails .popover-title, .viewBillDetailsPopover .popover-title, .customerBillListPanel .popover-title{
     border: 15px solid rgba(235, 235, 235, 0.9);
     border-bottom: none;
     height: 48px;
