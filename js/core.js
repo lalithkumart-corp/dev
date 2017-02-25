@@ -31,7 +31,7 @@ application.core ={
 	        $(this).find('.dropdown').hide();
 	    });
 
-	    $('li.home').on('click', function(e){
+	    $('.websiteName').on('click', function(e){
 	    	$('.mainContent').html('');
 	    });
 

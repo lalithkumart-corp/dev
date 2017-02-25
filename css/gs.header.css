@@ -1,0 +1,57 @@
+.mainMenuBarContainer{
+    background-color: white !important;
+    border-color: grey !important;
+    border-right: none !important;
+    border-top: none !important;
+    min-height: 30px !important;
+}
+.websiteName{
+    color: orange !important;
+    height: 30px !important;
+    padding: 10px 15px !important;
+}
+.mainMenuBarContainer .dropdown-menu li{
+    height: 26px;
+    padding: 5px;
+    color: #9d9d9d;
+}
+.mainMenuBarContainer .dropdown-menu li:hover{
+    color: black;
+}
+.mainMenuBarContainer li, .websiteName{
+    cursor: pointer;
+}
+.mainMenuBarContainer .navbar-nav>li>a{
+    border-bottom: 2px solid rgba(255, 165, 0, 0) !important;
+}
+.mainMenuBarContainer .navbar-nav>.active>a,
+.mainMenuBarContainer .navbar-nav>.active>a:focus,
+.mainMenuBarContainer .navbar-nav>.active>a:hover
+{
+    border-bottom: 2px solid rgba(255, 165, 0, 1) !important;
+    color: #9d9d9d !important;
+    background-color: white !important;
+}
+.mainMenuBarContainer .navbar-nav>.open>a,
+.mainMenuBarContainer .navbar-nav>.open>a:focus,
+.mainMenuBarContainer .navbar-nav>.open>a:hover{
+    color: #9d9d9d !important;
+    background-color: white !important;
+}
+.mainMenuBarContainer .navbar-nav>li>a:focus,
+.mainMenuBarContainer .navbar-nav>li>a:hover{
+    color: #9d9d9d !important;
+    border-bottom: 2px solid rgba(255, 165, 0, 1) !important;
+}
+.mainMenuBarContainer .navbar-brand:focus,
+.mainMenuBarContainer .navbar-brand:hover{
+    color: #9d9d9d !important;
+    background-color: white !important;
+}
+.mainMenuBarContainer .navbar-nav>li>.dropdown-menu{
+    margin-top: -1px;
+}
+.mainMenuBarContainer .navbar-nav>li>a{
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+}

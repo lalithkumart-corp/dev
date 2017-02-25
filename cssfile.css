@@ -232,7 +232,7 @@ input[type="text"]{
     /*border-top: 4px solid #1C1C1C;
     padding-top: 2px;*/
 }
-.dropdown{
+/*.dropdown{
     position: absolute !important;
     width: 140px;
     margin-left: -12px;
@@ -241,7 +241,7 @@ input[type="text"]{
     border: 1px solid lightgray;
     border-bottom-right-radius: 12px;
     display: none;
-}
+}*/
 .tools-list li{
     border: none;
     left: 0;
@@ -360,13 +360,13 @@ table.dataTable thead th{
 #minDateFilter{
     margin-top: 4px;
 }
-.open{
+#pendingDetails .open{
     border: 5px solid green;
     display: inline-block;
     border-radius: 50%;
     margin-bottom: 1px;
 }
-.closed{
+#pendingDetails .closed{
     border: 5px solid red;
     display: inline-block;
     border-radius: 50%;

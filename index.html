@@ -73,6 +73,7 @@
  	<script type="text/javascript" src="/js/gs.customer.js"></script>
  	<link rel="stylesheet" type="text/css" href="/css/gs.customer.css"/>
 
+ 	<link rel="stylesheet" type="text/css" href="/css/gs.header.css"/>
  	<script type="text/javascript" src="/js/gs.common-popup.js"></script>
  	<link rel="stylesheet" type="text/css" href="/css/gs.common-popup.css"/>
 
@@ -82,52 +83,37 @@
 	    		<label>Start No : </label><input id="startingTokenNo" type="text" class=""/></br>
 	    		<label>End No : </label><input id="endingingTokenNo" type="text" class=""/></br>
 	    	</div>
-	    	<div id="tokenPreviewArea" class='col-sm-5'>
-	    		
-	    	</div>
+	    	<div id="tokenPreviewArea" class='col-sm-5'></div>
 	    </div>
     </script>
 
 </head>
 <body>
-	<div class="tab">
-		<div class="menuTop">
-  			<div class="menuBar">
-				<ul class="leftMenus">
-      				<li class="home">Home
-      					<div class="dropdownLabel"></div>
-      					
-      				</li>
-      				<li class="tools">Tools
-      					<div class="dropdownLabel"></div>
-      					<div class="dropdown">
-      						<ul class="tools-list">
-      							<li id="createNewBill">Bill Creation </li>
-      							<li id="closeABill"> Bill Closing </li>
-      							<li id="getPledgeBook"> Pledge Book </li>
-      						</ul>
-      					</div>
-      				</li>
-      				<li class="settings">Settings
-      					<div class="dropdownLabel"></div>
-      					<div class="dropdown">
-      						<ul class="tools-list">
-      							<li id='tallyGenerator'> Tally </li>
-      							<li id='tokenGenerator'> Generate Token </li>
-      							<li id='manageOrn'> Manage Ornaments </li>
-      							<li id='tool-edit-cust-detail'>Customer Detail </li>
-      							<li id='tool_receiveAmt'>Recieve Amount</li>
-      						</ul>
-      					</div>
-      				</li>
-  				</ul>
-    		</div>
-  		</div>
-	</div>
-	<div class="mainContent">
-
-	</div>
-
-	
+	<nav class="navbar navbar-inverse mainMenuBarContainer">
+	  <div class="container-fluid">
+	    <div class="navbar-header">
+	      <a class="navbar-brand websiteName">Bhowri Devi Bankers</a>
+	    </div>
+	    <ul class="nav navbar-nav">
+	          <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown">Workspace <span class="caret"></span></a>
+	            <ul class="dropdown-menu">
+	              <li id="createNewBill">Bill Creation </li>
+	              <li id="closeABill"> Bill Closing </li>
+	              <li id="getPledgeBook"> Pledge Book </li>
+	            </ul>
+	          </li>
+	          <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" >Settings<span class="caret"></span></a>
+	            <ul class="dropdown-menu">
+	              <li id='tallyGenerator'> Tally </li>
+	              <li id='tokenGenerator'> Generate Token </li>
+	              <li id='manageOrn'> Manage Ornaments </li>
+	              <li id='tool-edit-cust-detail'>Customer Detail </li>
+	              <li id='tool_receiveAmt'>Recieve Amount</li>
+	            </ul>
+	          </li>
+	    </ul>
+	  </div>
+	</nav>
+	<div class="mainContent"></div>
 </body>
 </html>
