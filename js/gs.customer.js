@@ -112,6 +112,7 @@ gs.customer = {
 		$('.mobile3_val').val('');
 		$('#cust-details-container .item-image img').attr('src', gs.app.DEFAULT_PROFILE_PIC_PATH);
 		$('#editCustDetails').prop("disabled",true);
+		$customer.toggleButtons();
 		$('#cust-details-container .fieldsOverlay').show();
 		$('.custIdVal').focus();
 		$customer.totalCustomerList = {};

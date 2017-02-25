@@ -189,9 +189,9 @@ gs.pledgeBook = {
 		var table = $("#pendingDetails").on( 'init.dt', function () {
                gs.pledgeBook.initComplete();
             }).DataTable({
+                paging: false,
             	fixedColumns: true,
-            	orderCellsTop: true,
-                "bPaginate": false
+            	orderCellsTop: true
         	});
     	gs.pledgeBook.table = table;
 
