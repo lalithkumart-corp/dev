@@ -126,7 +126,7 @@ application.bill.creation = {
         self.bindImageRelations();
         self.bindCustIdCreations();
         self.bindTraverseEvents();
-        self.initHistoryPanel();
+        //self.initHistoryPanel();
         
         $('.printBill').off('click').on('click', function(){
             self.printBill();
@@ -351,18 +351,33 @@ application.bill.creation = {
             if($(this).val() == '')
                 return;
 
-            var customer_name = $('#customerName').val();
-            var father_name = $(this).val();
-            aSelf.getCustomerPendingBills(customer_name, father_name);
+            
+            /*START:get pending bills based on cname, fgname  */
+            var customer_name = $('#customerName').val().trim();
+            var father_name = $(this).val().trim();
+            aSelf.getCustomerPendingBills(customer_name, father_name); 
+            /*END: get pending bills based on cname, fgname  */
+
+            /*START:get pending bills based on customerId */
+            // var custId = $('#custId').val().trim();
+            // aSelf.getCustomerPendingBills(custId); 
+            /*END: get pending bills based on customerId */
         });
 
          $('#address').blur(function(e){
             if($(this).val() == '')
                 return;
-            var customer_name = $('#customerName').val();
-            var father_name = $('#fatherGaurdianName').val();
+            /*START:get pending bills based on cname, fgname, address*/
+            var customer_name = $('#customerName').val().trim();
+            var father_name = $('#fatherGaurdianName').val().trim();
             var address = $(this).val();
-            aSelf.getCustomerPendingBills(customer_name, father_name, address);
+            aSelf.getCustomerPendingBills(customer_name, father_name, address);  //get pending bills based on cname, fgname, address
+            /*END: get pending bills based on cname, fgname, address*/
+
+            /*START:get pending bills based on customerId */
+            // var custId = $('#custId').val().trim();
+            // aSelf.getCustomerPendingBills(custId); //get pending bills based on Customer ID
+            /*END: get pending bills based on customerId */
         });
     },
 
@@ -492,6 +507,9 @@ application.bill.creation = {
         var ornaments= '';
         tempObj.tableRows = $(".ornamentDetails tbody tr")
         _.each(tempObj.tableRows, function(aRow){
+            var isEmptyRow = self.isEmptyRow(aRow);
+            if(isEmptyRow)
+                return; //skip current iteration, if current row is empty
           _.each($(aRow).find('td'), function(aCol){
             var inputBox = $(aCol).find('input');
             var disabled = $(inputBox).is(':disabled');
@@ -511,6 +529,20 @@ application.bill.creation = {
         obj = self.getCalcDetails(obj, intDatas);
        
         return obj;
+    },
+
+    isEmptyRow: function(aRow){
+        var isEmpty = true;
+        _.each($(aRow).find('td'), function(aCol){
+            var inputBox = $(aCol).find('input');
+            var inputBoxVal = $(inputBox).val().trim();
+            var isDisabled = $(inputBox).is(':disabled');
+            if(!isDisabled && inputBoxVal !== ''){
+                isEmpty = false;
+                return false;
+            }
+        });
+        return isEmpty;
     },
        
     setImage : function(response){
@@ -774,13 +806,30 @@ application.bill.creation = {
         gs.popover.bindPopover('.viewBillDetails', self.getBillDetails);
     },
 
-    getCustomerPendingBills: function(customer_name, father_name, address){
+    //Get Customer pending Bills based on customer details(name, fgname, address)
+    // getCustomerPendingBills: function(customer_name, father_name, address){
+    //     var self = application.bill.creation;
+    //     var obj = {};
+    //     if(typeof address == 'undefined')
+    //         obj.aQuery= "SELECT * FROM "+gs.database.schema+".pledgebook where cname = '"+customer_name+"' and fgname = '"+father_name+"'";
+    //     else if(typeof address !== 'undefined')
+    //         obj.aQuery= "SELECT * FROM "+gs.database.schema+".pledgebook where cname = '"+customer_name+"' and fgname = '"+father_name+"' and address='"+address+"'";
+    //     var callBackObj = application.core.getCallbackObject();
+    //     var request = application.core.getRequestData('../php/executeQuery.php', obj, 'POST');
+    //     callBackObj.bind('api_response', function(event, response, request){
+    //         response = JSON.parse(response);
+    //         self.fillPendingBillTable(response);            
+    //     });
+    //     application.core.call(request, callBackObj);
+    // },
+
+    //Get Customer Pending Bills Based on Custid
+    getCustomerPendingBills: function(custId){
+        if(custId == '') 
+            return;
         var self = application.bill.creation;
         var obj = {};
-        if(typeof address == 'undefined')
-            obj.aQuery= "SELECT * FROM "+gs.database.schema+".pledgebook where cname = '"+customer_name+"' and fgname = '"+father_name+"'";
-        else if(typeof address !== 'undefined')
-            obj.aQuery= "SELECT * FROM "+gs.database.schema+".pledgebook where cname = '"+customer_name+"' and fgname = '"+father_name+"' and address='"+address+"'";
+        obj.aQuery= "SELECT * FROM "+gs.database.schema+".pledgebook where custid = '"+custId+"'";
         var callBackObj = application.core.getCallbackObject();
         var request = application.core.getRequestData('../php/executeQuery.php', obj, 'POST');
         callBackObj.bind('api_response', function(event, response, request){
@@ -834,6 +883,8 @@ application.bill.creation = {
         }
 
         _.each(response, function(value, index){
+            if(value.status == 'closed') //eliminate an iteration if the bill status is closed.Since the ending bill list panel, should hold only OPEN bills
+                return;
             var htmlCont = '';
             htmlCont += '<tr>';
                 htmlCont += '<td>' + (index+1) + '</td>';
@@ -886,7 +937,8 @@ application.bill.creation = {
             obj.aQuery = obj.aQuery + " and address= '"+addr+"'";
         }
 
-        obj.aQuery = obj.aQuery + " and custid IS NOT NULL";
+        //obj.aQuery = obj.aQuery + " and custid IS NOT NULL"; //this just excludes 'NULL'and does not exclude ''(empty String) values
+        obj.aQuery = obj.aQuery + " and custid !=''"; //exclude 'NULL'and ''(empty string) values
 
         var callBackObj = application.core.getCallbackObject();
         var request = application.core.getRequestData('../php/executeQuery.php', obj, 'POST');
@@ -895,10 +947,12 @@ application.bill.creation = {
             if(!_.isEmpty(data) && !_.isEmpty(data[0].custid)){
                 var id= data[0].custid;
                 self.autoFillDetails(id);
+                self.getCustomerPendingBills(id);
             }else{
                 var options={};
                 options.currFocus = currFocus;
                 self.generateNewCustId(options);
+                self.clearHistoryPanel();
             }
             $('#custId').val(id);
         });
@@ -927,16 +981,18 @@ application.bill.creation = {
                 return;
             response = JSON.parse(response);
             data = self.getUniqueList(response, 'custid');
+            var buff= []; //buffer
             if(!_.isEmpty(data) && !_.isEmpty(data[0].custid)){
                 _.each(data, function(value, index){
                     var existingId = value.custid;
                     existingId = existingId.toUpperCase();
-                    if(existingId.indexOf(id) !== -1){
-                        idSuffix = idSuffix+1;
-                        id= idPrefix + idSuffix;
-                    }
+                    buff.push(existingId);                    
                 });
             }
+            do{
+                idSuffix = idSuffix+1;
+                id= idPrefix + idSuffix;
+            }while(buff.indexOf(id) !== -1)
             $('#custId').val(id);
             $('#custId').addClass('new');
             
@@ -984,6 +1040,10 @@ application.bill.creation = {
                             return aData[param];
                         });
         return data;
+    },
+
+    clearHistoryPanel: function(){
+        $('.pendingBillListContainer table tbody').html('');
     }
 
 }
