@@ -11,6 +11,7 @@ if (!$link) {
     exit;
 }
 $sno = $_POST['s_no'];
+$identifier = time();
 $dates = $_POST['adate'];
 $billno = $_POST['aBillNo'];
 $amt = $_POST['aAmt'];
@@ -33,7 +34,7 @@ $intAmount = $_POST['intAmount'];
 $givenAmt = $_POST['givenAmt'];
 $custid = $_POST['custid'];
 
-$sql = "INSERT INTO ".$myDb.".pledgebook (sno, dates, billNo, amount, cname, fgname, address, address2, place, pincode, mobile, ornaments, grossWt, netwt, ornType , interest, interest_amt, given_amt, profilepicpath, status, custid ) VALUES ('".$sno."', '".$dates."', '".$billno."','".$amt."','".$cname."','".$fgName."','".$addr."','".$addr2."','".$place."','".$pin."','".$mob."','".$orn."','".$wt."','".$nett."', '".$ornType."', '".$intRate."', '".$intAmount."', '".$givenAmt."', '".$pic."', '".$status."', '".$custid."')";
+$sql = "INSERT INTO ".$myDb.".pledgebook (sno, identifier, dates, billNo, amount, cname, fgname, address, address2, place, pincode, mobile, ornaments, grossWt, netwt, ornType , interest, interest_amt, given_amt, profilepicpath, status, custid ) VALUES ('".$sno."','".$identifier."', '".$dates."', '".$billno."','".$amt."','".$cname."','".$fgName."','".$addr."','".$addr2."','".$place."','".$pin."','".$mob."','".$orn."','".$wt."','".$nett."', '".$ornType."', '".$intRate."', '".$intAmount."', '".$givenAmt."', '".$pic."', '".$status."', '".$custid."')";
 
 $stack = array();
 $obj = new stdClass();

@@ -2,7 +2,9 @@
 
 var template_htmlstr_billCreation = <?php echo jsonStringify('../templates/htmlstr_billCreation.html'); ?> ; 
 
-var template_htmlstr_pledgeBook = <?php echo jsonStringify('../templates/htmlstr_pledgeBook.html'); ?> ; 
+var template_htmlstr_pledgeBook_container = <?php echo jsonStringify('../templates/htmlstr_pledgeBook_container.html'); ?> ;
+
+var template_htmlstr_pledgeBook_table = <?php echo jsonStringify('../templates/htmlstr_pledgeBook_table.html'); ?> ; 
 
 var template_htmlstr_billClosing = <?php echo jsonStringify('../templates/htmlstr_billClosing.html'); ?> ;
 

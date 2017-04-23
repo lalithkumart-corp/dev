@@ -1,0 +1,10 @@
+.move_item_to_trash_container{
+	padding-left: 10px;
+}
+.move_item_to_trash{
+	width: 23px;
+	cursor: pointer;
+}
+.move_item_to_trash.disabled{
+	opacity: 0.2;
+}

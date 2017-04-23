@@ -10,7 +10,7 @@ if (!$link) {
     exit;
 }
 
-$sql = "SELECT * FROM ".$myDb.".pledgebook";
+$sql = "SELECT * FROM ".$myDb.".pledgebook where is_trashed != 'trashed' OR isnull(is_trashed)";
 $result = $link->query($sql);
 
 $stack = array();

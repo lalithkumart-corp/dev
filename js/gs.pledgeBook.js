@@ -2,17 +2,21 @@ if(typeof gs == 'undefined'){
     var gs = {};
 }
 gs.pledgeBook = {
+    selectors: gs.sel.getSelectors('pledgebook'),
     viewMode: 'all',
     editingBillNo: '',
     updatedBillNo: '',
     editingBillStatus: '',
     reRenderPledgeBook: false,
 	init : function(){
+        var container = _.template(template_htmlstr_pledgeBook_container, {});
+        $('.mainContent').html(container);
         gs.pledgeBook.viewMode = 'allBills';
 		gs.pledgeBook.bindEvents();
 		gs.pledgeBook.getPledgeBook();
 	},
 	bindEvents : function(){
+        var self = gs.pledgeBook, sel = self.selectors;
         function bindBillClick(){
             $('.pledgeBillNo').off().on('click', function(e){
                 gs.pledgeBook.editingBillNo = $(this).text() || '';
@@ -33,6 +37,18 @@ gs.pledgeBook = {
                 gs.pledgeBook.getPledgeBook();
                 gs.pledgeBook.reRenderPledgeBook = false;
             }
+        });
+        $(sel.trashBtn).off().on('click', function(e){
+            if($(this).hasClass('disabled'))
+                return;
+            gs.popup.init(
+            {
+             title: 'Confirmation',
+             desc: 'Move selected record(s) to Trash? ' ,
+             dismissBtnText: 'No',
+             buttons: ['Yes'],
+             callbacks: [self.trashSelectedRows]
+            });                
         });
         return bindBillClick;
 	},
@@ -153,15 +169,18 @@ gs.pledgeBook = {
         });
 	},
 	renderDetails : function(response){
+            var self = gs.pledgeBook, sel = self.selectors;
 			var property = {};
-			var template = _.template(template_htmlstr_pledgeBook, response);
-			$('.mainContent').html(template);
+			var template = _.template(template_htmlstr_pledgeBook_table, response);			
+            $(sel.pledgeBookTable).html(template);
 			gs.pledgeBook.asDataTable();
 			$('.mainContent').addClass('book');
             gs.pledgeBook.bindEvents();
+            $(sel.trashBtn).addClass('disabled');
 	},
 	
     asDataTable : function(){
+        var self = gs.pledgeBook, sel = self.selectors;
 		$('#pendingDetails thead tr#filterInput th').not(":eq(3)").each( function () {
         	var title = $('#pendingDetails thead tr#filterInput th').eq( $(this).index() ).text();
         	$(this).html( '<input type="text" class="'+title+'" onclick="event.stopPropagation();" placeholder="'+title+'" />' );
@@ -223,6 +242,11 @@ gs.pledgeBook = {
 
         $('#pendingDetails tbody').on( 'click', 'td.sorting_1', function () {
                 $(this).parent().toggleClass('selected');
+                var length = $(sel.selectedRows).length;
+                if(length > 0)
+                    $(sel.trashBtn).removeClass('disabled');
+                else
+                    $(sel.trashBtn).addClass('disabled');
         });
 
     $.fn.dataTableExt.afnFiltering.push(
@@ -640,6 +664,49 @@ gs.pledgeBook = {
         });
 
         $('#alertMsgModal').modal('show');
+    },
+
+    trashSelectedRows: function(){
+        var self = gs.pledgeBook, sel = self.selectors;
+        var rows = $(sel.selectedRows);
+        var obj = {};
+            obj.multiQuery = 'true';
+            obj.aQuery = 'SET SQL_SAFE_UPDATES = 0;';
+
+        _.each(rows, function(aRow, index){
+            var specificCol = $(aRow).find('.identifier');
+            var colName = 'identifier';
+            var uniqueIdentifier = $(specificCol).data('identifier');
+            if(uniqueIdentifier == ''){
+                colName = 'billNo';
+                uniqueIdentifier = $(specificCol).data('billno');
+            }
+
+            obj.aQuery += 'UPDATE '+gs.database.schema+'.pledgebook SET is_trashed = "trashed" WHERE '+colName+'="'+uniqueIdentifier+'";';
+
+        });
+        obj.aQuery += 'SET SQL_SAFE_UPDATES = 1';
+
+        var callBackObj = application.core.getCallbackObject();
+        var request = application.core.getRequestData('../php/executequery.php', obj , 'POST');
+        callBackObj.bind('api_response', function(event, response){
+            response = JSON.parse(response);
+            if(response[0].status == true){
+                gs.popup.init({
+                    title: 'Success',
+                    desc: 'Selected Bills has been moved to trash Successfully !',
+                    dismissBtnText: 'Ok',
+                    onHiddenCallback: gs.pledgeBook.getPledgeBook
+                });
+            }else{
+                gs.popup.init({
+                    title: 'Error',
+                    desc: 'Error!, Selected Bills could not be moved to trash! ',
+                    dismissBtnText: 'Ok'
+                });
+            }
+        });
+        application.core.call(request, callBackObj);
     },
 
     bindExport: function(){

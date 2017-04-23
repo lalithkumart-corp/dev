@@ -41,7 +41,7 @@
         	<tr>
         	<td><%= key+1 %></td>
         	<td><div class="<%= value.status%>"><span class="hidden<%= value.status%>"><%= value.status%></span></div></td>
-        	<td class="pledgeBillNo" title="<%= value.billNo%>"><%= value.billNo%></td>
+        	<td class="pledgeBillNo identifier" title="<%= value.billNo%>" data-identifier="<%= value.identifier%>" data-billno="<%= value.billNo%>"><%= value.billNo%></td>
         	<td title="<%= value.dates%>"><%= value.dates%></td>
         	<td title="<%= value.cname%>"><%= value.cname %></td>
         	<td title="<%= value.fgname%>"><%= value.fgname%></td>
