@@ -1,0 +1,19 @@
+.bill-no-input-container{
+    padding-top: 15px;
+}
+.bill-no-input-container input[type="text"]{
+    width: 100%;
+}
+.bill-no-input-container .merge-btn{
+    text-align: center;
+    margin: 8px 0;
+}
+.bill-no-input-container .merge-btn input{
+    width: 100px;
+}
+.view-panel{
+    border: 1px solid;
+}
+.view-panel .options{
+    padding: 15px;
+}

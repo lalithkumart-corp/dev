@@ -103,6 +103,12 @@ application.core ={
 		});
 		
 
+		$('.merge-cust-id').on('click', function(e){
+			var property = {}
+			var template = _.template(template_htmlstr_merge_cust_group, property);
+			$('.mainContent').html(template);
+			gs.mergecustomer.init();
+		});
 		this.getNecessaryDatas();
 	},
 

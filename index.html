@@ -78,6 +78,9 @@
  	<script type="text/javascript" src="/js/gs.common-popup.js"></script>
  	<link rel="stylesheet" type="text/css" href="/css/gs.common-popup.css"/>
 
+	 <script type="text/javascript" src="/js/gs.mergeCustGroup.js"></script>
+	 <link rel="stylesheet" type="text/css" href="/css/gs.mergeCustGroup.css"/>	 
+	 
     <script type='text/template' id='tokenGeneratorTemplate' class='template'>
     	<div id="tokenMainDashlet" class='col-sm-12'>
 	    	<div id='tokenInputArea' class='col-sm-5'>
@@ -105,16 +108,18 @@
 	          </li>
 	          <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" >Settings<span class="caret"></span></a>
 	            <ul class="dropdown-menu">
-	              <li id='tallyGenerator'> Tally </li>
-	              <li id='tokenGenerator'> Generate Token </li>
+	              <!--<li id='tallyGenerator'> Tally </li>
+	              <li id='tokenGenerator'> Generate Token </li>-->
 	              <li id='manageOrn'> Manage Ornaments </li>
 	              <li id='tool-edit-cust-detail'>Customer Detail </li>
-	              <li id='tool_receiveAmt'>Recieve Amount</li>
+	              <!--<li id='tool-update-bill-series'>Update Bill Series</li>-->
+	              <!--<li id='tool_receiveAmt'>Recieve Amount</li>-->
+								<li class="merge-cust-id">Merge Customer Group</li>
 	            </ul>
 	          </li>
 	    </ul>
 	  </div>
 	</nav>
-	<div class="mainContent"></div>
+	<div class="row mainContent"></div>
 </body>
 </html>

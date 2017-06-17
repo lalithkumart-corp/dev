@@ -41,12 +41,16 @@
      font-style: italic;
 }
 
+.font-weight0{
+    font-weight: normal;
+}
+
 body{
     font-family: newFont1 !important;
 }
 .mainContent{
     width: 975px;
-    margin: 0 auto;
+    margin: 0 auto !important;
     background-color: pink;
     margin-top: 10px;
 }
@@ -764,6 +768,9 @@ input[type=number]::-webkit-outer-spin-button {
 
 .greenColor{
     color: green;
+}
+.red-color{
+    color: red;
 }
 .boldFont{
     font-weight: bold;
