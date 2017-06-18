@@ -337,6 +337,7 @@ input[type="text"]:focus, input[type="number"]:focus{
     height: calc(100% - 43px);
     border-top: none;
     overflow-x: hidden;
+    width: 100%;
 }
 #pendingDetails .popover-title, .viewBillDetailsPopover .popover-title, .customerBillListPanel .popover-title{
     border: 15px solid rgba(235, 235, 235, 0.9);

@@ -18,11 +18,18 @@ gs.mergecustomer = (function(){
         $(sel.getBillDetails).off().on('click', function(){
             baseBillNo = $(sel.baseBillNo).val().trim();
             otherBillNo = $(sel.otherBillNo).val().trim();
+            if(baseBillNo == '' || otherBillNo == '')
+                return;
+            if(baseBillNo == otherBillNo){
+                showErrorMessage('Ids could not be same. Please provide different ID\'s');
+                return;
+            }
             getDetails();
         });        
     }
     function bindSubmitEvent(){
         $(sel.doMerge).off().on('click', function(e){
+            fetchCounter = 0;
             var newData = fetchNewDetails();
             merge(newData);
         });
@@ -35,8 +42,9 @@ gs.mergecustomer = (function(){
 		var request = application.core.getRequestData('../php/executequery.php', obj , 'POST');
 		callBackObj.bind('api_response', function(event, response){
             fetchCounter++;
-            rawResponse['baseBillDetails'] = JSON.parse(response)[0];
-			onFetchComplete();            
+            response = JSON.parse(response)[0];
+            rawResponse['baseBillDetails'] = response;
+            onFetchComplete();
 		});
 		application.core.call(request, callBackObj);
 
@@ -47,7 +55,8 @@ gs.mergecustomer = (function(){
 		var request = application.core.getRequestData('../php/executequery.php', obj2 , 'POST');
 		callBackOb.bind('api_response', function(event, response){
 			fetchCounter++;
-            rawResponse['otherBillDetails'] = JSON.parse(response)[0];
+            response = JSON.parse(response)[0];
+            rawResponse['otherBillDetails'] = response;
             onFetchComplete();
 		});
 		application.core.call(request, callBackOb);
@@ -55,10 +64,18 @@ gs.mergecustomer = (function(){
     function onFetchComplete(){
         if(fetchCounter < 2)
             return;
-        fetchCounter = 0;
-        var mergedResponse = mergeResponseData();
-        renderDetails(mergedResponse);
-        bindSubmitEvent();
+        var errorMsgIds = [];
+        if(_.isUndefined(rawResponse.baseBillDetails))
+            errorMsgIds.push(baseBillNo);
+        if(_.isUndefined(rawResponse.otherBillDetails))
+            errorMsgIds.push(otherBillNo);
+        if(errorMsgIds.length != 0){
+            showErrorMessage(errorMsgIds,'specialUsecase');
+        }else{
+            var mergedResponse = mergeResponseData();
+            renderDetails(mergedResponse);
+            bindSubmitEvent();
+        }
     }
     function mergeResponseData(){
         var parsedData;
@@ -141,6 +158,32 @@ gs.mergecustomer = (function(){
         $(sel.baseBillNo).val('');
         $(sel.otherBillNo).val('');
         $('.view-panel').html('');
+    }
+
+    function showErrorMessage(errorMsg, usecase){
+        if(!_.isUndefined(usecase) && usecase == 'specialUsecase'){
+            var errorMsgIds = errorMsg;
+            var custId1 = '', custId2 = '';
+            if(!_.isUndefined(errorMsgIds[0]))
+                custId1 = errorMsgIds[0];
+            if(!_.isUndefined(errorMsgIds[1]))
+                custId2 = ' and ' + errorMsgIds[1];
+            gs.popup.init(
+                    {
+                        title: 'Does not Exists!',
+                        desc: 'Customer group id <b>'+ custId1 + custId2 +'</b> does not exist. Please check the ID and try again',
+                        dismissBtnText: 'Ok',
+                        enableHtml: true
+                    });
+        }else{
+            gs.popup.init(
+                    {
+                        title: 'Error!',
+                        desc: errorMsg,
+                        dismissBtnText: 'Ok',
+                        enableHtml: true
+                    });
+        }
     }
 
     return{
