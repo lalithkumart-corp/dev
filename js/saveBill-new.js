@@ -421,7 +421,7 @@ application.bill.creation = {
                 var responseData = JSON.parse(response)[0];
                 if(responseData.status == 'success'){                
                     self.updateLastBillNumber();
-                    self.updateLastSerialNumber();
+                    //self.updateLastSerialNumber();
                     gs.popup.init(
                         {
                          title: 'Success',
@@ -486,7 +486,7 @@ application.bill.creation = {
     getEntries : function(intDatas) {
         var self = application.bill.creation;
         var obj = {}, tempObj = {};
-        obj.s_no = application.bill.creation.current_s_no || '';
+       // obj.s_no = application.bill.creation.current_s_no || '';
         obj.adate = $('.inputValDate').val() || '';
         var billSeries = $('#billSeries').val() || '';
         var billNo = $('#billNo').val() || '';
