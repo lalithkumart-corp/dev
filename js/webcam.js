@@ -220,34 +220,19 @@ gs.webcamModel = {
 			});
 
 			$('#deletePhoto').on('click', function(e){
-				var obj = {
-					delete_file : gs.webcamModel.displayPicName
-				};
-				 $.ajax({
-                    url: 'uploads/deleteFile.php',
-                    type: 'POST',
-                    data: obj,
-                    success: function(data, textStatus, jqXHR)
-                    {
-                    	$('#show_saved_img img').attr('src', '');
-                    	$('#savePhoto').fadeOut();
-						$('#deletePhoto').fadeOut();
-                    },
-                    error: function(jqXHR, textStatus, errorThrown)
-                    {
-                       console.log("Ajax Error..");
-                    }
-                });
+				gs.webcamModel.deletePhoto();
 			});
 
 			$('#savePhoto').on('click', function(e){
 				var setImage = $('#show_saved_img img').attr('src');
 				application.bill.creation.setPicUrl(setImage);
 				$(".item-image img").addClass('selfieImage');
-				$('#webModalContainer').modal('hide');
+				gs.webcamModel.dismiss();
 			});
 
 			$('.dismissWebcam').on('click', function(e){
+				if(gs.webcamModel.displayPicName != '')
+					gs.webcamModel.deletePhoto();
 				gs.webcamModel.dismiss();
 			});
 
@@ -261,6 +246,26 @@ gs.webcamModel = {
 				//reset camera for the next shot
 				webcam.reset();
 			});
+	},
+	deletePhoto: function(){
+		var obj = {
+			delete_file : gs.webcamModel.displayPicName
+		};
+			$.ajax({
+			url: 'uploads/deleteFile.php',
+			type: 'POST',
+			data: obj,
+			success: function(data, textStatus, jqXHR)
+			{
+				$('#show_saved_img img').attr('src', '');
+				$('#savePhoto').fadeOut();
+				$('#deletePhoto').fadeOut();
+			},
+			error: function(jqXHR, textStatus, errorThrown)
+			{
+				console.log("Ajax Error..");
+			}
+		});
 	},
 	dismiss: function(){
 		$('#webcam-modal-container').remove();

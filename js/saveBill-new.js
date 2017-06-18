@@ -297,8 +297,9 @@ application.bill.creation = {
 
         $('.clearImg').on('click', function(){
             if($('.item-image img').hasClass('selfieImage')){
-                var temp = $('.item-image img').attr('src').indexOf('/');
-                var imageName = $('.item-image img').attr('src').substring(temp+1);
+                var temp = $('.item-image img').attr('src').indexOf('/');            
+                var imageFilePath = $('.item-image img').attr('src').substring(temp+1);
+                var imageName = imageFilePath.split('/')[1];
                 $.ajax({
                         url: 'uploads/deleteFile.php',
                         type: 'POST',
