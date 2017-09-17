@@ -204,13 +204,22 @@ gs.pledgeBook = {
 	            .column( $(this).parent().index()+':visible' )
 	            .search( this.value )
 	            .draw();
+            //gs.pledgeBook.dataTableObj.fnPageChange('last');
 	    });
+
 		var table = $("#pendingDetails").on( 'init.dt', function () {
                gs.pledgeBook.initComplete();
             }).DataTable({
-                paging: false,
+                //paging: false,
+                'pageLength': 40,
             	fixedColumns: true,
-            	orderCellsTop: true
+            	orderCellsTop: true,
+                 "initComplete": function (oSettings) {
+                     gs.pledgeBook.dataTableObj = this;
+                 },
+                 "drawCallback": function(){
+                    
+                 }
         	});
     	gs.pledgeBook.table = table;
 
@@ -348,8 +357,9 @@ gs.pledgeBook = {
     },
 
     initComplete: function(){
-        if(typeof gs.pledgeBook.table != 'undefined' && !_.isEmpty(gs.pledgeBook.table)){
+        if(typeof gs.pledgeBook.table != 'undefined' && !_.isEmpty(gs.pledgeBook.table)){            
             gs.pledgeBook.table.draw();
+            gs.pledgeBook.dataTableObj.fnPageChange('last');
         }else{
             setTimeout(function(){
                 gs.pledgeBook.initComplete();

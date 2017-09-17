@@ -44,6 +44,7 @@
 .customerCidPopup{
 	width: 1000px !important;
 	left: calc(50% - 500px);
+	top: 10px;
 }
 #commonModalBodyDiv{
 	overflow-x: hidden;
