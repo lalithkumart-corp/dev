@@ -211,14 +211,14 @@ gs.pledgeBook = {
                gs.pledgeBook.initComplete();
             }).DataTable({
                 //paging: false,
-                'pageLength': 40,
+                //'pageLength': 40,
             	fixedColumns: true,
             	orderCellsTop: true,
                  "initComplete": function (oSettings) {
                      gs.pledgeBook.dataTableObj = this;
                  },
                  "drawCallback": function(){
-                    
+                    gs.pledgeBook.tableDrawCallback();
                  }
         	});
     	gs.pledgeBook.table = table;
@@ -293,6 +293,11 @@ gs.pledgeBook = {
         gs.spinner.hide();
 	},
 	
+    tableDrawCallback: function(){
+        var bindBillClick = gs.pledgeBook.bindEvents();
+        bindBillClick();
+    },
+
     getDetails : function(value){
         var totalOrnWt = value.netwt ? value.netwt : '-';
 	    	var htmlContent = "<div><table class='ornDesc'> <colgroup><col style='width: 15px'><col style='width: 70px'><col style='width: 70px'><col style='width: 20px'></colgroup><thead><th>S.No</th><th>Item <span id='totalOrnWt'>( "+totalOrnWt+" gm )</span></th><th>Sepc</th><th>Nos</th></thead><tbody>"
