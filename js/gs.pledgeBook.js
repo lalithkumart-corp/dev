@@ -217,9 +217,14 @@ gs.pledgeBook = {
                  "initComplete": function (oSettings) {
                      gs.pledgeBook.dataTableObj = this;
                  },
+                 "preDrawCallback": function( settings ) {
+                    gs.spinner.show();
+                 },
                  "drawCallback": function(){
+                    gs.spinner.hide();
                     gs.pledgeBook.tableDrawCallback();
-                 }
+                 },
+                 "lengthMenu": [[10, 25, 40, 50, 100, -1], [10, 25, 40, 50, 100, "All"]]
         	});
     	gs.pledgeBook.table = table;
 

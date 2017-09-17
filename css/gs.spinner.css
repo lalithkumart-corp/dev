@@ -1,0 +1,85 @@
+
+.spinner-container{
+    top: calc(50% - 40px);
+    left: calc(50% - 95px);
+    position: absolute;
+    z-index: 1054;
+    background-repeat: no-repeat;
+    height: 40px;
+    width: 160px;
+    display: none;
+    border: none;
+    background-color: transparent;
+    box-sizing: content-box;
+    padding: 4px;
+}
+.spinner-container.hasBackground{
+    /* background-color: <?php echo $colors->white ?>;
+    border: 5px solid lightgrey; */
+    box-shadow: 1px 3px 11px #747779;
+    border-radius: 2px;
+    background: white;
+}
+.spinner-container.hasSemiBackground{
+    box-shadow: 1px 3px 11px #747779;
+    border-radius: 2px;
+    background: white;
+}
+.spinner-overlay{
+    position: absolute;
+    top: 0;
+    height: 100%;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 1053;
+    display: none;
+    opacity: 0;
+}
+.spinner-overlay.hasBackground{
+    /* background: transparent url('/web/images/marketing/overlay-pixel.png?v=<?php echo $UIDEV_CONF->VERSION; ?>') 0 0 repeat; */
+    /*background-color: rgba(255,255,255,0.7);*/
+    background-color: rgba(130, 129, 129, 0.7);
+    opacity: 1;
+}
+.spinner-text{
+    float: left;
+    margin-right: 10px;
+    font-size: 18px;
+    padding-top: 10px;
+    padding-left: 20px;
+    color: #323232;
+}
+.dark-bg .spinner-text{
+    color: #fff;
+}
+.hasBackground .spinner-text, .dark-bg .hasBackground .spinner-text{
+    color: #323232;
+}
+.spinner-image{
+    padding-top: 8px;
+    padding-right: 10px;
+    width: 40px;
+    height: 36px;
+}
+.filter-spinner .spinner-image{
+    float: right;
+    top: 3px;
+    position: absolute;
+    padding-top: 3px;
+    padding-bottom: 2px;
+    margin-left: 12px;
+    right: 0;
+    z-index: 11;
+    padding-right: 0;
+    margin-right: 10px;
+    width: 25px;
+    height: 28px
+}
+.filter-spinner .input-group-icon{
+    display: none;
+}
+.filter-spinner .spinner-container{
+    position: static;
+    padding: 0;
+}
