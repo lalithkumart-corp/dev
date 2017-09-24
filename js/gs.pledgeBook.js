@@ -100,25 +100,25 @@ gs.pledgeBook = {
                 var obj = {
                     aQuery: "UPDATE "+gs.database.schema+".pledgebook SET status='closed', billClosedDate='"+todayDate+"' WHERE billNo='"+gs.pledgeBook.editingBillNo+"'"
                 }
-                var callBackObj = application.core.getCallbackObject();
-                var request = application.core.getRequestData('../php/executequery.php', obj , 'POST');
+                var callBackObj = gs.api.getCallbackObject();
+                var request = gs.api.getRequestData('../php/executequery.php', obj , 'POST');
                 callBackObj.bind('api_response', function(event, response){
                   
                 });
-                application.core.call(request, callBackObj);
+                gs.api.call(request, callBackObj);
                 //END:: update in 'pledgeBook' Table in DB
 
                 //START:: update in 'billClosingDetail' Table in DB
                 var obj = {
                     aQuery: "INSERT INTO "+gs.database.schema+".billclosingdetail (billNo, pledgedDate, closedDate, pledge_amt, no_of_month, rate_of_interest, int_rupee_per_month, interest_amt, actual_estimated_amt, discount_amt, paid_amt, payment_mode) VALUES ('"+gs.pledgeBook.editingBillNo+"', '"+pledgeDate+"', '"+ todayDate +"','"+ principal +"', '"+ int_details.no_of_month +"', '"+ int_details.int_rate +"', '"+ int_details.int_rupee_per_month+"', '"+ int_details.interest_amt +"', '"+ int_details.actual_estimated_amt + "', '"+ int_details.discount_amt +"', '"+ int_details.paid_amt +"', '"+ int_details.payment_mode +"')"
                 }
-                var callBackObject = application.core.getCallbackObject();
-                var request = application.core.getRequestData('../php/executequery.php', obj , 'POST');
+                var callBackObject = gs.api.getCallbackObject();
+                var request = gs.api.getRequestData('../php/executequery.php', obj , 'POST');
                 callBackObject.bind('api_response', function(event, response){
                   gs.pledgeBook.onBillStatusUpdated(JSON.parse(response), 'closed');
                   gs.pledgeBook.reRenderPledgeBook = true;
                 });
-                application.core.call(request, callBackObject);
+                gs.api.call(request, callBackObject);
                 //END:: update in 'billClosingDetail' Table in DB
 
             });
@@ -127,25 +127,25 @@ gs.pledgeBook = {
                 var obj = {
                     aQuery: "UPDATE "+gs.database.schema+".pledgebook SET status='open', billClosedDate='' WHERE billNo='"+gs.pledgeBook.editingBillNo+"'"
                 }
-                var callBackObj = application.core.getCallbackObject();
-                var request = application.core.getRequestData('../php/executequery.php', obj , 'POST');
+                var callBackObj = gs.api.getCallbackObject();
+                var request = gs.api.getRequestData('../php/executequery.php', obj , 'POST');
                 callBackObj.bind('api_response', function(event, response){
                   //TODO
                 });
-                application.core.call(request, callBackObj);
+                gs.api.call(request, callBackObj);
                 //END:: update in 'pledgeBook' Table in DB
 
                 //START:: update in 'billClosingDetail' Table in DB
                 var obj = {
                     aQuery: "DELETE FROM "+gs.database.schema+".billclosingdetail WHERE billNo='"+gs.pledgeBook.editingBillNo+"'"
                 }
-                var callBackObj = application.core.getCallbackObject();
-                var request = application.core.getRequestData('../php/executequery.php', obj , 'POST');
+                var callBackObj = gs.api.getCallbackObject();
+                var request = gs.api.getRequestData('../php/executequery.php', obj , 'POST');
                 callBackObj.bind('api_response', function(event, response){
                   gs.pledgeBook.reRenderPledgeBook = true;
                   gs.pledgeBook.onBillStatusUpdated(JSON.parse(response), 'open');
                 });
-                application.core.call(request, callBackObj);
+                gs.api.call(request, callBackObj);
                 //END:: update in 'billClosingDetail' Table in DB
             });
         });
@@ -636,21 +636,21 @@ gs.pledgeBook = {
         var obj = {
             aQuery: "UPDATE "+gs.database.schema+".pledgebook SET status='closed', billClosedDate='"+ datas.closingDate +"' WHERE billNo='"+bill_to_update+"'"
         }
-        var callBackObj = application.core.getCallbackObject();
-        var request = application.core.getRequestData('../php/executequery.php', obj , 'POST');
+        var callBackObj = gs.api.getCallbackObject();
+        var request = gs.api.getRequestData('../php/executequery.php', obj , 'POST');
         callBackObj.bind('api_response', function(event, response){
         });
-        application.core.call(request, callBackObj);
+        gs.api.call(request, callBackObj);
 
         var obj = {
             aQuery: "UPDATE "+gs.database.schema+".billclosingdetail SET pledgedDate='"+datas.pledgedDate+"', closedDate='"+datas.closingDate+"', pledge_amt='"+datas.pledgedAmt+"', no_of_month='"+datas.no_of_month+"', rate_of_interest='"+datas.int_rate+"', int_rupee_per_month='"+datas.int_rupee_per_month+"', interest_amt='"+datas.interest_amt+"', actual_estimated_amt='"+datas.actual_estimated_amt+"', discount_amt='"+datas.discount_amt+"', paid_amt='"+datas.paid_amt+"', payment_mode='"+datas.payment_mode+"' WHERE billNo='"+bill_to_update+"'"
         }
-        var callBackObj = application.core.getCallbackObject();
-        var request = application.core.getRequestData('../php/executequery.php', obj , 'POST');
+        var callBackObj = gs.api.getCallbackObject();
+        var request = gs.api.getRequestData('../php/executequery.php', obj , 'POST');
         callBackObj.bind('api_response', function(event, response){
             gs.pledgeBook.updateComplete(JSON.parse(response));
         });
-        application.core.call(request, callBackObj);
+        gs.api.call(request, callBackObj);
         gs.pledgeBook.updatedBillNo = bill_to_update;
     },
 
@@ -707,8 +707,8 @@ gs.pledgeBook = {
         });
         obj.aQuery += 'SET SQL_SAFE_UPDATES = 1';
 
-        var callBackObj = application.core.getCallbackObject();
-        var request = application.core.getRequestData('../php/executequery.php', obj , 'POST');
+        var callBackObj = gs.api.getCallbackObject();
+        var request = gs.api.getRequestData('../php/executequery.php', obj , 'POST');
         callBackObj.bind('api_response', function(event, response){
             response = JSON.parse(response);
             if(response[0].status == true){
@@ -726,7 +726,7 @@ gs.pledgeBook = {
                 });
             }
         });
-        application.core.call(request, callBackObj);
+        gs.api.call(request, callBackObj);
     },
 
     bindExport: function(){

@@ -38,28 +38,28 @@ gs.mergecustomer = (function(){
         var obj = {
             aQuery: "SELECT * FROM dev.pledgebook where custid = '"+baseBillNo+"'"
         }
-        var callBackObj = application.core.getCallbackObject();
-		var request = application.core.getRequestData('../php/executequery.php', obj , 'POST');
+        var callBackObj = gs.api.getCallbackObject();
+		var request = gs.api.getRequestData('../php/executequery.php', obj , 'POST');
 		callBackObj.bind('api_response', function(event, response){
             fetchCounter++;
             response = JSON.parse(response)[0];
             rawResponse['baseBillDetails'] = response;
             onFetchComplete();
 		});
-		application.core.call(request, callBackObj);
+		gs.api.call(request, callBackObj);
 
         var obj2 = {
             aQuery: "SELECT * FROM dev.pledgebook where custid = '"+otherBillNo+"'"
         }
-        var callBackOb = application.core.getCallbackObject();
-		var request = application.core.getRequestData('../php/executequery.php', obj2 , 'POST');
+        var callBackOb = gs.api.getCallbackObject();
+		var request = gs.api.getRequestData('../php/executequery.php', obj2 , 'POST');
 		callBackOb.bind('api_response', function(event, response){
 			fetchCounter++;
             response = JSON.parse(response)[0];
             rawResponse['otherBillDetails'] = response;
             onFetchComplete();
 		});
-		application.core.call(request, callBackOb);
+		gs.api.call(request, callBackOb);
     }
     function onFetchComplete(){
         if(fetchCounter < 2)
@@ -128,8 +128,8 @@ gs.mergecustomer = (function(){
         obj.aQuery += 'update dev.pledgebook set custid="'+newData.baseBillNo+'",cname="'+newData.cname+'", fgname="'+newData.gname+'", address="'+newData.addr+'", address2="'+newData.addr2+'",place="'+newData.place+'", pincode="'+newData.pincode+'", mobile="'+newData.mobile+'" where custid="'+newData.baseBillNo+'";';
         obj.aQuery += 'update dev.pledgebook set custid="'+newData.baseBillNo+'",cname="'+newData.cname+'", fgname="'+newData.gname+'", address="'+newData.addr+'", address2="'+newData.addr2+'",place="'+newData.place+'", pincode="'+newData.pincode+'", mobile="'+newData.mobile+'" where custid="'+newData.otherBillNo+'";';
         obj.aQuery += 'SET SQL_SAFE_UPDATES = 1;';
-        var callBackOb = application.core.getCallbackObject();
-		var request = application.core.getRequestData('../php/executequery.php', obj , 'POST');
+        var callBackOb = gs.api.getCallbackObject();
+		var request = gs.api.getRequestData('../php/executequery.php', obj , 'POST');
 		callBackOb.bind('api_response', function(event, response){
             var title, msg, onHiddenCallBack;            
             var response = JSON.parse(response);
@@ -152,7 +152,7 @@ gs.mergecustomer = (function(){
                  onHiddenCallback: onHiddenCallBack
                 });
 		});
-		application.core.call(request, callBackOb);
+		gs.api.call(request, callBackOb);
     }
     function clearFields(){
         $(sel.baseBillNo).val('');

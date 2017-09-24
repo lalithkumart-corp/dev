@@ -45,101 +45,101 @@ gs.autocompleter = {
 	getCNames: function(){
 		var obj = {};
 		obj.aQuery = "SELECT distinct cname FROM "+gs.database.schema+".pledgebook";
-		var callBackObj = application.core.getCallbackObject();
-		var request = application.core.getRequestData('../php/executeQuery.php', obj, 'POST');
+		var callBackObj = gs.api.getCallbackObject();
+		var request = gs.api.getRequestData('../php/executeQuery.php', obj, 'POST');
 		callBackObj.bind('api_response', function(event, response){
 			response = JSON.parse(response);
 		   	gs.autocompleter.setCNames(response);
 		});
-		application.core.call(request, callBackObj);
+		gs.api.call(request, callBackObj);
 	},
 	getFGNames: function(){
 		var obj = {};
 		obj.aQuery = "SELECT fgname FROM "+gs.database.schema+".pledgebook";
-		var callBackObj = application.core.getCallbackObject();
-		var request = application.core.getRequestData('../php/executeQuery.php', obj, 'POST');
+		var callBackObj = gs.api.getCallbackObject();
+		var request = gs.api.getRequestData('../php/executeQuery.php', obj, 'POST');
 		callBackObj.bind('api_response', function(event, response){
 			response = JSON.parse(response);
 		   	gs.autocompleter.setFGNames(response);
 		});
-		application.core.call(request, callBackObj);
+		gs.api.call(request, callBackObj);
 	},
 	getAddress: function(){
 		var obj = {};
 		obj.aQuery = "SELECT address FROM "+gs.database.schema+".pledgebook";
-		var callBackObj = application.core.getCallbackObject();
-		var request = application.core.getRequestData('../php/executeQuery.php', obj, 'POST');
+		var callBackObj = gs.api.getCallbackObject();
+		var request = gs.api.getRequestData('../php/executeQuery.php', obj, 'POST');
 		callBackObj.bind('api_response', function(event, response){
 			response = JSON.parse(response);
 		   	gs.autocompleter.setAddress(response);
 		});
-		application.core.call(request, callBackObj);
+		gs.api.call(request, callBackObj);
 	},
 	getAddress2: function(){
 		var obj = {};
 		obj.aQuery = "SELECT address2 FROM "+gs.database.schema+".pledgebook";
-		var callBackObj = application.core.getCallbackObject();
-		var request = application.core.getRequestData('../php/executeQuery.php', obj, 'POST');
+		var callBackObj = gs.api.getCallbackObject();
+		var request = gs.api.getRequestData('../php/executeQuery.php', obj, 'POST');
 		callBackObj.bind('api_response', function(event, response){
 			response = JSON.parse(response);
 		   	gs.autocompleter.setAddress2(response);
 		});
-		application.core.call(request, callBackObj);
+		gs.api.call(request, callBackObj);
 	},
 	getPlace: function(){
 		var obj = {};
 		obj.aQuery = "SELECT place FROM "+gs.database.schema+".pledgebook";
-		var callBackObj = application.core.getCallbackObject();
-		var request = application.core.getRequestData('../php/executeQuery.php', obj, 'POST');
+		var callBackObj = gs.api.getCallbackObject();
+		var request = gs.api.getRequestData('../php/executeQuery.php', obj, 'POST');
 		callBackObj.bind('api_response', function(event, response){
 			response = JSON.parse(response);
 		   	gs.autocompleter.setPlace(response);
 		});
-		application.core.call(request, callBackObj);
+		gs.api.call(request, callBackObj);
 	},
 	getPincode: function(){
 		var obj = {};
 		obj.aQuery = "SELECT pincode FROM "+gs.database.schema+".pledgebook";
-		var callBackObj = application.core.getCallbackObject();
-		var request = application.core.getRequestData('../php/executeQuery.php', obj, 'POST');
+		var callBackObj = gs.api.getCallbackObject();
+		var request = gs.api.getRequestData('../php/executeQuery.php', obj, 'POST');
 		callBackObj.bind('api_response', function(event, response){
 			response = JSON.parse(response);
 		   	gs.autocompleter.setPincode(response);
 		});
-		application.core.call(request, callBackObj);
+		gs.api.call(request, callBackObj);
 	},
 	getMobileNos: function(){
 		var obj = {};
 		obj.aQuery = "SELECT mobile FROM "+gs.database.schema+".pledgebook";		
-		var callBackObj = application.core.getCallbackObject();
-		var request = application.core.getRequestData('../php/executeQuery.php', obj, 'POST');
+		var callBackObj = gs.api.getCallbackObject();
+		var request = gs.api.getRequestData('../php/executeQuery.php', obj, 'POST');
 		callBackObj.bind('api_response', function(event, response){
 			response = JSON.parse(response);
 		   	gs.autocompleter.setMobileNos(response);
 		});
-		application.core.call(request, callBackObj);
+		gs.api.call(request, callBackObj);
 	},
 	getOrnList: function(){
 		var obj = {};
 		obj.aQuery = "SELECT ornament_name FROM "+gs.database.schema+".ornament_list";
-		var callBackObj = application.core.getCallbackObject();
-		var request = application.core.getRequestData('../php/executeQuery.php', obj, 'POST');
+		var callBackObj = gs.api.getCallbackObject();
+		var request = gs.api.getRequestData('../php/executeQuery.php', obj, 'POST');
 		callBackObj.bind('api_response', function(event, response){
 			response = JSON.parse(response);
 		   	gs.autocompleter.setOrnList(response);
 		});
-		application.core.call(request, callBackObj);
+		gs.api.call(request, callBackObj);
 	},
 	getPendingBillNo: function(){
 		var obj = {};
 		obj.aQuery = "SELECT billNo FROM "+gs.database.schema+".pledgebook where status = 'open'";
-		var callBackObj = application.core.getCallbackObject();
-		var request = application.core.getRequestData('../php/executeQuery.php', obj, 'POST');
+		var callBackObj = gs.api.getCallbackObject();
+		var request = gs.api.getRequestData('../php/executeQuery.php', obj, 'POST');
 		callBackObj.bind('api_response', function(event, response){
 			response = JSON.parse(response);
 		   	gs.autocompleter.setPendingBillNos(response);
 		});
-		application.core.call(request, callBackObj);
+		gs.api.call(request, callBackObj);
 	},
 	/*END:: getter Methods*/
 

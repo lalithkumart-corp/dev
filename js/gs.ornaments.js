@@ -24,8 +24,8 @@ gs.ornaments = {
 		}
 		var obj = {};
 		obj.aQuery= "SELECT * from "+gs.database.schema+".ornament_list";
-		var callBackObj = application.core.getCallbackObject();
-        var request = application.core.getRequestData('../php/executequery.php', obj , 'POST');
+		var callBackObj = gs.api.getCallbackObject();
+        var request = gs.api.getRequestData('../php/executequery.php', obj , 'POST');
         callBackObj.bind('api_response', function(event, response){
 			data = JSON.parse(response);
 			aSelf.storage = [];
@@ -43,7 +43,7 @@ gs.ornaments = {
 			aSelf.bindEvents();
 			gs.spinner.hide();
         });
-        application.core.call(request, callBackObj);
+        gs.api.call(request, callBackObj);
 	},
 	bindEvents: function(){
 		var aSelf = gs.ornaments;
@@ -155,8 +155,8 @@ gs.ornaments = {
 		gs.popup.hide();
 		var obj = {};
         obj.aQuery= 'DELETE FROM '+gs.database.schema+'.ornament_list WHERE ornament_id = "'+ornId+'"';
-		var request = application.core.getRequestData('../php/executequery.php', obj , 'POST');
-		var callBackObj = application.core.getCallbackObject();
+		var request = gs.api.getRequestData('../php/executequery.php', obj , 'POST');
+		var callBackObj = gs.api.getCallbackObject();
         callBackObj.bind('api_response', function(event, response){
         	response = JSON.parse(response);
             if(response[0].status == true){
@@ -176,7 +176,7 @@ gs.ornaments = {
             }    
             gs.spinner.hide();       
         });
-        application.core.call(request, callBackObj);
+        gs.api.call(request, callBackObj);
 	},
 	confirmDeleteAll: function(){
 		var aSelf = gs.ornaments;
@@ -192,8 +192,8 @@ gs.ornaments = {
 		query = query.substring(0, query.length-1);
 		query += ')';
 		obj.aQuery = query;
-		var request = application.core.getRequestData('../php/executequery.php', obj , 'POST');
-		var callBackObj = application.core.getCallbackObject();
+		var request = gs.api.getRequestData('../php/executequery.php', obj , 'POST');
+		var callBackObj = gs.api.getCallbackObject();
         callBackObj.bind('api_response', function(event, response){
         	response = JSON.parse(response);
             gs.spinner.hide();
@@ -212,7 +212,7 @@ gs.ornaments = {
 			    });
 	        }
         });
-        application.core.call(request, callBackObj);
+        gs.api.call(request, callBackObj);
 	},
 	editOrnament: function(){
 		var aSelf = gs.ornaments;   
@@ -225,8 +225,8 @@ gs.ornaments = {
 		gs.popup.hide();
 		var obj = {};
         obj.aQuery= 'UPDATE '+gs.database.schema+'.ornament_list SET ornament_name = "'+newVal+'" WHERE ornament_id = "'+ornId+'"';
-		var request = application.core.getRequestData('../php/executequery.php', obj , 'POST');
-		var callBackObj = application.core.getCallbackObject();
+		var request = gs.api.getRequestData('../php/executequery.php', obj , 'POST');
+		var callBackObj = gs.api.getCallbackObject();
         callBackObj.bind('api_response', function(event, response){
         	response = JSON.parse(response);
             if(response[0].status == true){
@@ -246,7 +246,7 @@ gs.ornaments = {
             }    
             gs.spinner.hide();       
         });
-        application.core.call(request, callBackObj);
+        gs.api.call(request, callBackObj);
 	},
 	addNewOrn: function(){
 		var aSelf = gs.ornaments;
@@ -257,8 +257,8 @@ gs.ornaments = {
 		newOrnName = orn_type + " " + $('.ornInputField').val();
 		var obj = {};
         obj.aQuery= 'INSERT into '+gs.database.schema+'.ornament_list (ornament_id, ornament_name, ornament_status) VALUES ("'+$.now()+'", "'+newOrnName+'", "active")';
-		var request = application.core.getRequestData('../php/executequery.php', obj , 'POST');
-		var callBackObj = application.core.getCallbackObject();
+		var request = gs.api.getRequestData('../php/executequery.php', obj , 'POST');
+		var callBackObj = gs.api.getCallbackObject();
         callBackObj.bind('api_response', function(event, response){
         	response = JSON.parse(response);
             if(response[0].status == true){
@@ -277,7 +277,7 @@ gs.ornaments = {
             }
             gs.spinner.hide();
         });
-        application.core.call(request, callBackObj);
+        gs.api.call(request, callBackObj);
 	},
 
 	isAlreadyExists: function(newOrnName){

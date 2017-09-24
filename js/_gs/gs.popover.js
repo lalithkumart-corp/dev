@@ -29,13 +29,13 @@ gs.popover = {
 	getContent: function(callback){
 		var self = gs.popover;
 		var tmpContainer = $.now();
-		var callBackObj = application.core.getCallbackObject();
-		var request = application.core.getRequestData('../php/interest.php', '' , 'POST');
+		var callBackObj = gs.api.getCallbackObject();
+		var request = gs.api.getRequestData('../php/interest.php', '' , 'POST');
 		callBackObj.bind('api_response', function(event, response){
 			response = JSON.parse(response);
 		   callback(response, tmpContainer);
 		});
-		application.core.call(request, callBackObj);
+		gs.api.call(request, callBackObj);
 		return '<div id="'+ tmpContainer +'" >Loading...</div>';
 	},
 

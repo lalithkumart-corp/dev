@@ -176,14 +176,14 @@ application.bill.creation = {
     setDefaults: function(){
         var obj = {};
         obj.aQuery= 'SELECT * FROM '+gs.database.schema+'.billseries';
-        var callBackObj = application.core.getCallbackObject();
-        var request = application.core.getRequestData('../php/executequery.php', obj , 'POST');
+        var callBackObj = gs.api.getCallbackObject();
+        var request = gs.api.getRequestData('../php/executequery.php', obj , 'POST');
         callBackObj.bind('api_response', function(event, response){
           response = JSON.parse(response);
           application.bill.creation.updateDefaults(response);
           gs.autocompleter.setAutoCompleter('billCreation');
         });
-        application.core.call(request, callBackObj);
+        gs.api.call(request, callBackObj);
     },
 
     updateDefaults: function(data){
@@ -406,18 +406,18 @@ application.bill.creation = {
         var entryList = {};
         function saveEntry(){
             gs.popup.hide();
-            var callBackObj = application.core.getCallbackObject();
-            var request = application.core.getRequestData('../php/interest.php', '' , 'POST');
+            var callBackObj = gs.api.getCallbackObject();
+            var request = gs.api.getRequestData('../php/interest.php', '' , 'POST');
             callBackObj.bind('api_response', function(event, response){
                entryList = self.getEntries(response);
                saveIntoDB();
             });
-            application.core.call(request, callBackObj);
+            gs.api.call(request, callBackObj);
         }
         
         function saveIntoDB(){
-            var callBackObj = application.core.getCallbackObject();
-            var request = application.core.getRequestData('../php/createbill.php', entryList, 'POST');
+            var callBackObj = gs.api.getCallbackObject();
+            var request = gs.api.getRequestData('../php/createbill.php', entryList, 'POST');
             callBackObj.bind('api_response', function(event, response){
                 var responseData = JSON.parse(response)[0];
                 if(responseData.status == 'success'){                
@@ -437,7 +437,7 @@ application.bill.creation = {
                     gs.popup.showMsg('<b class="error">Error</b>', responseData.status_msg, 'OK', 'bounce');
                 }
             });
-            application.core.call(request, callBackObj);
+            gs.api.call(request, callBackObj);
         };
 
     },
@@ -449,8 +449,8 @@ application.bill.creation = {
         var qObj1 = {
             aQuery: aQuery1
         }
-        var callBackObj = application.core.getCallbackObject();
-        var request = application.core.getRequestData('../php/executeQuery.php', qObj1, 'POST');
+        var callBackObj = gs.api.getCallbackObject();
+        var request = gs.api.getRequestData('../php/executeQuery.php', qObj1, 'POST');
         callBackObj.bind('api_response', function(event, response, request){
             response = JSON.parse(response);
             if(response[0].status == true)
@@ -458,7 +458,7 @@ application.bill.creation = {
             else
                 console.info('Failure in Update of Last Bill Number');
         });
-        application.core.call(request, callBackObj);
+        gs.api.call(request, callBackObj);
     },
 
     updateLastSerialNumber: function(){
@@ -467,8 +467,8 @@ application.bill.creation = {
         var qObj2 = {
             aQuery: aQuery2
         }
-        var callBackObj = application.core.getCallbackObject();
-        var request = application.core.getRequestData('../php/executeQuery.php', qObj2, 'POST');
+        var callBackObj = gs.api.getCallbackObject();
+        var request = gs.api.getRequestData('../php/executeQuery.php', qObj2, 'POST');
         callBackObj.bind('api_response', function(event, response, request){
             response = JSON.parse(response);
             if(response[0].status == true)
@@ -477,7 +477,7 @@ application.bill.creation = {
                 console.info('Failure in Update of Serial number');
         });
 
-        application.core.call(request, callBackObj);
+        gs.api.call(request, callBackObj);
     },
 
     bindNecessaryEvents: function(){
@@ -815,13 +815,13 @@ application.bill.creation = {
     //         obj.aQuery= "SELECT * FROM "+gs.database.schema+".pledgebook where cname = '"+customer_name+"' and fgname = '"+father_name+"'";
     //     else if(typeof address !== 'undefined')
     //         obj.aQuery= "SELECT * FROM "+gs.database.schema+".pledgebook where cname = '"+customer_name+"' and fgname = '"+father_name+"' and address='"+address+"'";
-    //     var callBackObj = application.core.getCallbackObject();
-    //     var request = application.core.getRequestData('../php/executeQuery.php', obj, 'POST');
+    //     var callBackObj = gs.api.getCallbackObject();
+    //     var request = gs.api.getRequestData('../php/executeQuery.php', obj, 'POST');
     //     callBackObj.bind('api_response', function(event, response, request){
     //         response = JSON.parse(response);
     //         self.fillPendingBillTable(response);            
     //     });
-    //     application.core.call(request, callBackObj);
+    //     gs.api.call(request, callBackObj);
     // },
 
     //Get Customer Pending Bills Based on Custid
@@ -831,13 +831,13 @@ application.bill.creation = {
         var self = application.bill.creation;
         var obj = {};
         obj.aQuery= "SELECT * FROM "+gs.database.schema+".pledgebook where custid = '"+custId+"'";
-        var callBackObj = application.core.getCallbackObject();
-        var request = application.core.getRequestData('../php/executeQuery.php', obj, 'POST');
+        var callBackObj = gs.api.getCallbackObject();
+        var request = gs.api.getRequestData('../php/executeQuery.php', obj, 'POST');
         callBackObj.bind('api_response', function(event, response, request){
             response = JSON.parse(response);
             self.fillPendingBillTable(response);            
         });
-        application.core.call(request, callBackObj);
+        gs.api.call(request, callBackObj);
     },
 
     fillPendingBillTable: function(response){
@@ -941,8 +941,8 @@ application.bill.creation = {
         //obj.aQuery = obj.aQuery + " and custid IS NOT NULL"; //this just excludes 'NULL'and does not exclude ''(empty String) values
         obj.aQuery = obj.aQuery + " and custid !=''"; //exclude 'NULL'and ''(empty string) values
 
-        var callBackObj = application.core.getCallbackObject();
-        var request = application.core.getRequestData('../php/executeQuery.php', obj, 'POST');
+        var callBackObj = gs.api.getCallbackObject();
+        var request = gs.api.getRequestData('../php/executeQuery.php', obj, 'POST');
         callBackObj.bind('api_response', function(event, response, request){
             data = JSON.parse(response);
             if(!_.isEmpty(data) && !_.isEmpty(data[0].custid)){
@@ -957,7 +957,7 @@ application.bill.creation = {
             }
             $('#custId').val(id);
         });
-        application.core.call(request, callBackObj);
+        gs.api.call(request, callBackObj);
     },
     generateNewCustId: function(options){
         var self = application.bill.creation;
@@ -975,8 +975,8 @@ application.bill.creation = {
         var obj = {
             aQuery : "SELECT distinct custid from "+gs.database.schema+".pledgebook where custid like '"+idPrefix+"%'"
         }
-        var callBackObj = application.core.getCallbackObject();
-        var request = application.core.getRequestData('../php/executeQuery.php', obj, 'POST');
+        var callBackObj = gs.api.getCallbackObject();
+        var request = gs.api.getRequestData('../php/executeQuery.php', obj, 'POST');
         callBackObj.bind('api_response', function(event, response, request){
             if(response == null)
                 return;
@@ -998,14 +998,14 @@ application.bill.creation = {
             $('#custId').addClass('new');
             
         });
-        application.core.call(request, callBackObj);
+        gs.api.call(request, callBackObj);
     },
     autoFillDetails: function(id){  
          var obj = {
             aQuery : "SELECT distinct * from "+gs.database.schema+".pledgebook where custid= '"+id+"'"
         }
-        var callBackObj = application.core.getCallbackObject();
-        var request = application.core.getRequestData('../php/executeQuery.php', obj, 'POST');
+        var callBackObj = gs.api.getCallbackObject();
+        var request = gs.api.getRequestData('../php/executeQuery.php', obj, 'POST');
         callBackObj.bind('api_response', function(event, response, request){
             if(response == null)
                 return;
@@ -1013,14 +1013,14 @@ application.bill.creation = {
             data = response[0];
             $('#fatherGaurdianName').val(data.fgname);
             $('#address').val(data.address);
-            $('#address2').val(data.address2 || application.core.defaults.address2);
-            $('#place').val(data.place || application.core.defaults.place);
-            $('#pincode').val(data.pincode || application.core.defaults.pincode);
+            $('#address2').val(data.address2 || gs.pageConfig.defaults.address2);
+            $('#place').val(data.place || gs.pageConfig.defaults.place);
+            $('#pincode').val(data.pincode || gs.pageConfig.defaults.pincode);
             $('#mobNo').val(data.mobile);
             $('.item-image img').attr('src', data.profilepicpath);
             $('#custId').hasClass('new')? $('#custId').removeClass('new'): '';
         });
-        application.core.call(request, callBackObj);
+        gs.api.call(request, callBackObj);
     },
     clearAutoFill: function(options){
         if(options.currFocus == 'cname'){
@@ -1029,9 +1029,9 @@ application.bill.creation = {
         if(options.currFocus == 'cname' || options.currFocus == 'fgname'){
             $('#address').val('');
         }
-        $('#address2').val(application.core.defaults.address2);
-        $('#place').val(application.core.defaults.place);
-        $('#pincode').val(application.core.defaults.pincode);
+        $('#address2').val(gs.pageConfig.defaults.address2);
+        $('#place').val(gs.pageConfig.defaults.place);
+        $('#pincode').val(gs.pageConfig.defaults.pincode);
         $('#mobNo').val('');
     },
     /* END: custId */

@@ -1,17 +1,10 @@
 var application = {};
-$(document).on('ready',function(){
-    application.core.bindHomeEvents();
-})
+
 application.core ={
 	autocompleter : {
 		billClosing : false
 	},
-	defaults : {
-		pincode: '600056',
-		place: 'CHENNAI',
-		address2: 'KATTUPPAKKAM'
-	},
-
+	
 	bindHomeEvents : function(){
 		var aSelf = application.core;
 		$("#renderingTemplate").on('click', function(e){
@@ -102,6 +95,11 @@ application.core ={
 			gs.customer.init();
 		});
 		
+		$('.temporary').on('click', function(e){
+			var property = {};
+			var template = _.template(template_htmlstr_temporary, property);
+			$('.mainContent').html(template);
+		});
 
 		$('.merge-cust-id').on('click', function(e){
 			var property = {}
@@ -114,79 +112,16 @@ application.core ={
 
 	getNecessaryDatas: function(){
 		var aSelf = this;
-		var callBackObj = aSelf.getCallbackObject();
-        var request = application.core.getRequestData('../php/interest.php', '' , 'POST');
+		var callBackObj = gs.api.getCallbackObject();
+        var request = gs.api.getRequestData('../php/interest.php', '' , 'POST');
         callBackObj.bind('api_response', function(event, response){
            aSelf.setInterestDetailsInStorage(response);
         });
-        application.core.call(request, callBackObj);
+        gs.api.call(request, callBackObj);
 	},
 
 	setInterestDetailsInStorage: function(response){
 		localStorage.setItem('interestData', response);
-	},
-
-	getCallbackObject : function() {
-		callback = $({});
-
-		/**
-		 * Event is used to perform pre operations before accessing the API. (Ex Setting flag values for SEO.)
-		 */
-		callback.bind("api_request", function(){
-			console.log('ÁPI REQUEST Clla binded');
-		});
-
-		callback.bind("invalid_credentials", function(event, response) {
-			//console.log('ÁPI REQUEST Clla binded');
-		});
-
-		//Binding API Error Event.
-		callback.bind("api_error", function(event, error) {
-			//
-		});
-
-		callback.bind("server_error", function(event, theErrorThrown) {
-			//
-		});
-		callback.bind("post_response", function(){
-			//
-		});
-
-	    callback.bind("domain_error", function(){  //Binding the domain error when the user domain mismatched
-	     //
-	    });
-
-		return callback;
-	},
-	call: function(request, callBackObj){
-		$.ajax({
-		       url: request.method.name,
-		       type: request.type,
-		       data: request.params,
-		       success: function(data, textStatus, jqXHR){
-		          application.core.apiSuccessCallback(data, textStatus, jqXHR, callBackObj, request);
-		       },
-		       error: function(jqXHR, textStatus, errorThrown){
-		          application.core.apiErrorCallback(data, textStatus, jqXHR, callBackObj, request);
-		       }
-		   });
-	},
-	apiSuccessCallback: function(response, textStatus, jqXHR, callBackObj, request){
-		callBackObj.trigger("api_response", response, request);
-	},
-	apiErrorCallback: function(jqXHR, textStatus, errorThrown, callBackObj, request){
-		alert('API ERROR, Check console for more Details ');
-		console.log('API Error is = ', textStatus);
-	},
-	getRequestData: function(methName , data , reqType ){
-		var request = {
-			method:{
-				name : methName,
-			},
-			params: data,
-			type : reqType
-		};
-		return request;
 	},
 
 	//this will remove the class which is set for PageName Identification

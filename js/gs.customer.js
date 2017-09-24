@@ -60,8 +60,8 @@ gs.customer = {
 		var $customer = gs.customer;
 		var obj = {};
 		obj.aQuery= "SELECT * FROM "+gs.database.schema+".pledgebook where custid='"+$customer.currentCid+"'";
-		var callBackObj = application.core.getCallbackObject();
-		var request = application.core.getRequestData('../php/executequery.php', obj , 'POST');
+		var callBackObj = gs.api.getCallbackObject();
+		var request = gs.api.getRequestData('../php/executequery.php', obj , 'POST');
 		callBackObj.bind('api_response', function(event, response){
 		  response = JSON.parse(response);
 		  $customer.rawDetails = response;
@@ -80,7 +80,7 @@ gs.customer = {
 		  }else
 		  	$customer.fillDetails(aRecord);
 		});
-		application.core.call(request, callBackObj);
+		gs.api.call(request, callBackObj);
 	},
 	fillDetails: function(aRecord){
 		$('.cname_val').val(aRecord.cname);
@@ -92,7 +92,7 @@ gs.customer = {
 		$('.mobile_val').val(aRecord.mobile);
 		$('.mobile2_val').val(aRecord.mobile2);
 		$('.mobile3_val').val(aRecord.mobile3);
-		var picPath = aRecord.profilepicpath || gs.app.DEFAULT_PROFILE_PIC_PATH;
+		var picPath = aRecord.profilepicpath || gs.pageConfig.DEFAULT_PROFILE_PIC_PATH;
 		$('#cust-details-container .item-image img').attr('src', picPath);
 		$('#editCustDetails').prop("disabled",false);
 		$('#cust-details-container .fieldsOverlay').show();
@@ -110,7 +110,7 @@ gs.customer = {
 		$('.mobile_val').val('');
 		$('.mobile2_val').val('');
 		$('.mobile3_val').val('');
-		$('#cust-details-container .item-image img').attr('src', gs.app.DEFAULT_PROFILE_PIC_PATH);
+		$('#cust-details-container .item-image img').attr('src', gs.pageConfig.DEFAULT_PROFILE_PIC_PATH);
 		$('#editCustDetails').prop("disabled",true);
 		$customer.toggleButtons();
 		$('#cust-details-container .fieldsOverlay').show();
@@ -141,8 +141,8 @@ gs.customer = {
 		obj.aQuery += "UPDATE "+gs.database.schema+".pledgebook SET cname='"+details.cname+"', fgname='"+details.fgname+"', address='"+details.addr1+"', address_old='"+details.addr_old+"', address2='"+details.addr2+"', place='"+details.place+"', mobile='"+details.mobile+"', mobile2='"+details.mobile2+"', mobile3='"+details.mobile3+"', profilepicpath='"+details.profilepicpath+"' WHERE custid='"+$customer.currentCid+"';";
 		obj.aQuery += 'SET SQL_SAFE_UPDATES = 1;';
 		obj.multiQuery = 'true';
-		var callBackObj = application.core.getCallbackObject();
-		var request = application.core.getRequestData('../php/executequery.php', obj , 'POST');
+		var callBackObj = gs.api.getCallbackObject();
+		var request = gs.api.getRequestData('../php/executequery.php', obj , 'POST');
 		callBackObj.bind('api_response', function(event, response){
 			gs.popup.init(
                 {
@@ -153,7 +153,7 @@ gs.customer = {
                  onHiddenCallback: gs.customer.toggleButtons
                 });
 		});
-		application.core.call(request, callBackObj);
+		gs.api.call(request, callBackObj);
 	},
 	toggleButtons: function(){
 		$('#editCustDetails').show();
@@ -166,13 +166,13 @@ gs.customer = {
 		if(!_.isEmpty($customer.totalCustomerList)){
 			$customer.openCIDTable();
 		}else{
-			var callBackObj = application.core.getCallbackObject();
-			var request = application.core.getRequestData('../php/getPledgebook.php', {} , 'POST');
+			var callBackObj = gs.api.getCallbackObject();
+			var request = gs.api.getRequestData('../php/getPledgebook.php', {} , 'POST');
 			callBackObj.bind('api_response', function(event, response){
 				$customer.totalCustomerList = JSON.parse(response);
 				$customer.openCIDTable();				
 			});
-			application.core.call(request, callBackObj);
+			gs.api.call(request, callBackObj);
 		}			
 	},
 	openCIDTable: function(){

@@ -183,14 +183,14 @@ gs.autocompleter = {
 		var obj = {
 			aQuery: query
 		}
-		var callBackObj = application.core.getCallbackObject();
-		var request = application.core.getRequestData('executeQuery.php', obj, 'POST');
+		var callBackObj = gs.api.getCallbackObject();
+		var request = gs.api.getRequestData('executeQuery.php', obj, 'POST');
 		callBackObj.bind('api_response', function(event, response){
 			response = JSON.parse(response);
 		   	gs.autocompleter.storePendingCustomerLists(response);
 		   	gs.autocompleter.storeCustid(response);
 		});
-		application.core.call(request, callBackObj);
+		gs.api.call(request, callBackObj);
 	},
 	getPendingGaurdians: function(){
 		var query = "SELECT fgname FROM "+gs.database.schema+".pledgebook";
@@ -198,13 +198,13 @@ gs.autocompleter = {
 		var obj = {
 			aQuery: query
 		}
-		var callBackObj = application.core.getCallbackObject();
-		var request = application.core.getRequestData('executeQuery.php', obj, 'POST');
+		var callBackObj = gs.api.getCallbackObject();
+		var request = gs.api.getRequestData('executeQuery.php', obj, 'POST');
 		callBackObj.bind('api_response', function(event, response){
 			response = JSON.parse(response);
 		   	gs.autocompleter.storePendingGuardianLists(response);
 		});
-		application.core.call(request, callBackObj);
+		gs.api.call(request, callBackObj);
 	},
 	getAddress: function(){
 		var query = "SELECT address FROM "+gs.database.schema+".pledgebook";
@@ -212,13 +212,13 @@ gs.autocompleter = {
 		var obj = {
 			aQuery: query
 		}
-		var callBackObj = application.core.getCallbackObject();
-		var request = application.core.getRequestData('executeQuery.php', obj, 'POST');
+		var callBackObj = gs.api.getCallbackObject();
+		var request = gs.api.getRequestData('executeQuery.php', obj, 'POST');
 		callBackObj.bind('api_response', function(event, response){
 			response = JSON.parse(response);
 		   	gs.autocompleter.storeAddress(response);
 		});
-		application.core.call(request, callBackObj);
+		gs.api.call(request, callBackObj);
 	},
 	getAddress2: function(){
 		var query = "SELECT address2 FROM "+gs.database.schema+".pledgebook";
@@ -226,13 +226,13 @@ gs.autocompleter = {
 		var obj = {
 			aQuery: query
 		}
-		var callBackObj = application.core.getCallbackObject();
-		var request = application.core.getRequestData('executeQuery.php', obj, 'POST');
+		var callBackObj = gs.api.getCallbackObject();
+		var request = gs.api.getRequestData('executeQuery.php', obj, 'POST');
 		callBackObj.bind('api_response', function(event, response){
 			response = JSON.parse(response);
 		   	gs.autocompleter.storeAddress2(response);
 		});
-		application.core.call(request, callBackObj);
+		gs.api.call(request, callBackObj);
 	},
 	getPlace: function(){
 		var query = "SELECT place FROM "+gs.database.schema+".pledgebook";
@@ -240,13 +240,13 @@ gs.autocompleter = {
 		var obj = {
 			aQuery: query
 		}
-		var callBackObj = application.core.getCallbackObject();
-		var request = application.core.getRequestData('executeQuery.php', obj, 'POST');
+		var callBackObj = gs.api.getCallbackObject();
+		var request = gs.api.getRequestData('executeQuery.php', obj, 'POST');
 		callBackObj.bind('api_response', function(event, response){
 			response = JSON.parse(response);
 		   	gs.autocompleter.storePlace(response);
 		});
-		application.core.call(request, callBackObj);
+		gs.api.call(request, callBackObj);
 	},
 	getPincode: function(){
 		var query = "SELECT pincode FROM "+gs.database.schema+".pledgebook";
@@ -254,26 +254,26 @@ gs.autocompleter = {
 		var obj = {
 			aQuery: query
 		}
-		var callBackObj = application.core.getCallbackObject();
-		var request = application.core.getRequestData('executeQuery.php', obj, 'POST');
+		var callBackObj = gs.api.getCallbackObject();
+		var request = gs.api.getRequestData('executeQuery.php', obj, 'POST');
 		callBackObj.bind('api_response', function(event, response){
 			response = JSON.parse(response);
 		   	gs.autocompleter.storePincode(response);
 		});
-		application.core.call(request, callBackObj);
+		gs.api.call(request, callBackObj);
 	},
 	getMobileNos: function(){
 		var query = "SELECT mobile FROM "+gs.database.schema+".pledgebook";
 		var obj = {
 			aQuery: query
 		}
-		var callBackObj = application.core.getCallbackObject();
-		var request = application.core.getRequestData('executeQuery.php', obj, 'POST');
+		var callBackObj = gs.api.getCallbackObject();
+		var request = gs.api.getRequestData('executeQuery.php', obj, 'POST');
 		callBackObj.bind('api_response', function(event, response){
 			response = JSON.parse(response);
 		   	gs.autocompleter.storeMobileNos(response);
 		});
-		application.core.call(request, callBackObj);
+		gs.api.call(request, callBackObj);
 	},
 
 	getOrnList: function(){
@@ -282,13 +282,13 @@ gs.autocompleter = {
 		var obj = {
 			aQuery: query
 		}
-		var callBackObj = application.core.getCallbackObject();
-		var request = application.core.getRequestData('executeQuery.php', obj, 'POST');
+		var callBackObj = gs.api.getCallbackObject();
+		var request = gs.api.getRequestData('executeQuery.php', obj, 'POST');
 		callBackObj.bind('api_response', function(event, response){
 			response = JSON.parse(response);
 		   	gs.autocompleter.storeOrnList(response);
 		});
-		application.core.call(request, callBackObj);
+		gs.api.call(request, callBackObj);
 	},
 	getPendingBillNo: function(){
 		var query = "SELECT billNo FROM "+gs.database.schema+".pledgebook where status = 'open'";
@@ -296,13 +296,13 @@ gs.autocompleter = {
 		var obj = {
 			aQuery: query
 		}
-		var callBackObj = application.core.getCallbackObject();
-		var request = application.core.getRequestData('executeQuery.php', obj, 'POST');
+		var callBackObj = gs.api.getCallbackObject();
+		var request = gs.api.getRequestData('executeQuery.php', obj, 'POST');
 		callBackObj.bind('api_response', function(event, response){
 			response = JSON.parse(response);
 		   	gs.autocompleter.storePendingBillNos(response);
 		});
-		application.core.call(request, callBackObj);
+		gs.api.call(request, callBackObj);
 	},
 	storePendingCustomerLists: function(data){
 		var aSelf = gs.autocompleter;
