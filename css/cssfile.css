@@ -348,7 +348,7 @@ table.dataTable thead th{
     height: 32px;
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
-    padding-left: 10px;
+    padding-left: 15px;
     padding-right: 10px;
     font-weight: bold;
     font-size: 17px;
@@ -356,6 +356,9 @@ table.dataTable thead th{
 .descHeader p{
     margin-top: 5px;
     margin-bottom: 0px;
+}
+.billClosing .descBody{
+    padding-top: 7px;
 }
 .BCimageContainer{
     height: 150px;
@@ -372,9 +375,12 @@ table.dataTable thead th{
     font-weight: bold;
     padding-right: 12px;
 }
-.BCOrnDiv table{
+.BCOrnDiv table#closingOrnDetails{
     width: 100%;
-    margin-top: 15px;
+    margin-top: 10px;
+}
+.BCOrnDiv table#closingOrnDetails thead th{
+    padding-bottom: 5px;
 }
 .BCOrnDiv{
     border: 1px solid;
@@ -391,7 +397,7 @@ table.dataTable thead th{
   -o-transition: all 0.5s ease;
   -webkit-border-radius: 25px;
   -webkit-box-shadow: #6E7849 0 0 10px;
-  -webkit-transition: all 0.5s ease;
+  -webkit-transition: all 0.01s ease;
 /*  background-color: #e92fe1;
   background-image: -moz-linear-gradient(90deg, #B9C788, #e92fe1);
   background-image: -ms-linear-gradient(90deg, #B9C788, #e92fe1);
@@ -408,8 +414,9 @@ table.dataTable thead th{
   padding: 10px;
   text-decoration: none;
   text-shadow: #000000 5px 5px 15px;
-  transition: all 0.5s ease;
+  transition: all 0.01s ease;
   margin-top: 100px;
+  outline: none;
 }
 
 .closeBillButton.active{
