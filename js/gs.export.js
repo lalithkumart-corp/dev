@@ -19,7 +19,10 @@ gs.export = {
 			var newRowData = true;
 			data += i+1 + ',';
 			for(j=1; j<8; j++){
-				data += '"'+ $('#pendingDetails tbody tr:eq('+ i +') td:eq('+ j +')').text() + '"';
+				data += '"';
+				if(j == 3)//is date value ?
+					data += ' '; //adding whitespace as prefix, since the excel tool will remove the leading zero in the cells.
+				data += $('#pendingDetails tbody tr:eq('+ i +') td:eq('+ j +')').text() + '"';
 				data += ',';
 			}
 			var ornList = $('#pendingDetails tbody tr:eq('+ i +') td:eq(8) div').attr('data-content');
